@@ -8,17 +8,17 @@
 
 import UIKit
 
-protocol BKTransactionViewDelegate: class {
+public protocol BKTransactionViewDelegate: class {
     var presentingViewController: UIViewController { get }
 }
 
-enum BKBackgroundType {
+public enum BKBackgroundType {
     case Solid(UIColor?)
     case Gradient(UIColor?, UIColor?)
     case Image
 }
 
-class BKTransactionView: UIView {
+public class BKTransactionView: UIView {
     let backgroundView: BKBackgroundView
     
     let labelView: UILabel = {
