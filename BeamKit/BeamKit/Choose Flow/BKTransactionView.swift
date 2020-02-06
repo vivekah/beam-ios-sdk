@@ -48,7 +48,7 @@ public class BKTransactionView: UIView {
     }()
     // TODO match view
     
-    init(with type: BKBackgroundType) {
+    public init(with type: BKBackgroundType) {
         self.backgroundView = BKBackgroundView(with: type)
         super.init(frame: .zero)
         setup()
@@ -58,7 +58,7 @@ public class BKTransactionView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         changeButton.layer.cornerRadius = changeButton.bounds.height / 3
         super.layoutSubviews()
     }
