@@ -65,6 +65,9 @@ public class BKTransactionView: UIView {
     
     func setup() {
         // TODO LOAD IMPACT // SHOW VIEWS
+        addSubview(backgroundView.usingConstraints())
+        addSubview(changeButton.usingConstraints())
+        addSubview(labelView.usingConstraints())
         setupConstraints()
     }
     
