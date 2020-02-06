@@ -130,10 +130,7 @@
 				1BBF120623E3556200C249E9 /* Media.xcassets */,
 				1B1EAC7222C41E8100BB02EB /* beam_ios_sdk.h */,
 				1B1EAC7322C41E8100BB02EB /* Info.plist */,
-				1B1EAC7A22C41EB100BB02EB /* Manager.swift */,
-				1B1FC3FE233C13F600A45E87 /* BeamKitContext.swift */,
-				1B05B63A2346850B00C72CA8 /* BeamKitUserAPI.swift */,
-				1B1FC401233C16CC00A45E87 /* BeamError.swift */,
+				1B226F2123EC966700180EB4 /* Public */,
 				1BDE5A6D233D4527003443D5 /* Custom UI */,
 				1BDE5A6C233D43AB003443D5 /* Processors */,
 				1BDE5A6B233D438F003443D5 /* Choose Flow */,
@@ -152,6 +149,17 @@
 				1B1EAC8022C41FEE00BB02EB /* Font+Beam.swift */,
 			);
 			path = "UI extensions";
+			sourceTree = "<group>";
+		};
+		1B226F2123EC966700180EB4 /* Public */ = {
+			isa = PBXGroup;
+			children = (
+				1B1EAC7A22C41EB100BB02EB /* Manager.swift */,
+				1B1FC3FE233C13F600A45E87 /* BeamKitContext.swift */,
+				1B05B63A2346850B00C72CA8 /* BeamKitUserAPI.swift */,
+				1B1FC401233C16CC00A45E87 /* BeamError.swift */,
+			);
+			path = Public;
 			sourceTree = "<group>";
 		};
 		1B9C1FBA234E3190008BEC08 /* Impact */ = {
