@@ -25,22 +25,22 @@ extension UIImageView {
         objc_setAssociatedObject(self, &AssociatedKeys.SharedImageCache, cache, .OBJC_ASSOCIATION_RETAIN)
     }
     
-    public class func sharedImageCache() -> AFImageCacheProtocol {
+    public class func BKSharedImageCache() -> AFImageCacheProtocol {
         struct Static {
-            static var defaultImageCache:AFImageCache? = {
+            static var BKdefaultImageCache: BKImageCache? = {
                 //                NotificationCenter.default.addObserver(forName: .didReceiveMemor, object: nil, queue: OperationQueue.main) { (NSNotification) -> Void in
                 //                    Static.defaultImageCache!.removeAllObjects()
                 //                }
-                return AFImageCache()
+                return BKImageCache()
             }()
         }
         
-        return objc_getAssociatedObject(self, &AssociatedKeys.SharedImageCache) as? AFImageCacheProtocol ?? Static.defaultImageCache!
+        return objc_getAssociatedObject(self, &AssociatedKeys.SharedImageCache) as? AFImageCacheProtocol ?? Static.BKdefaultImageCache!
     }
     
     fileprivate class func af_sharedImageRequestOperationQueue() -> OperationQueue {
         struct Static {
-            static var queue:OperationQueue? = {
+            static var queue: OperationQueue? = {
                 let queue = OperationQueue()
                 queue.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
                 return queue
@@ -62,17 +62,17 @@ extension UIImageView {
         }
     }
     
-    public func setImageWithUrl(_ url:URL, placeHolderImage:UIImage? = nil, priority: Operation.QueuePriority = .normal) {
+    public func bkSetImageWithUrl(_ url: URL, placeHolderImage: UIImage? = nil, priority: Operation.QueuePriority = .normal) {
         let request:NSMutableURLRequest = NSMutableURLRequest(url: url)
         request.addValue("image/*", forHTTPHeaderField: "Accept")
-        self.setImageWithUrlRequest(request as URLRequest, placeHolderImage: placeHolderImage, success: nil, failure: nil)
+        self.bkSetImageWithUrlRequest(request as URLRequest, placeHolderImage: placeHolderImage, success: nil, failure: nil)
     }
     
-    public func setImageWithUrl(_ url:URL,
+    public func bkSetImageWithUrl(_ url:URL,
                                 placeHolderImage:UIImage? = nil,
                                 priority: Operation.QueuePriority = .normal,
                                 completion: ((Bool) -> Void)? = nil) {
-        let request:NSMutableURLRequest = NSMutableURLRequest(url: url)
+        let request: NSMutableURLRequest = NSMutableURLRequest(url: url)
         request.addValue("image/*", forHTTPHeaderField: "Accept")
         
         let onSuccess: (URLRequest?, URLResponse?, UIImage, Bool) -> Void = { _, _, _, _ in
@@ -81,22 +81,22 @@ extension UIImageView {
         let onFailure: (URLRequest?, URLResponse?, NSError) -> Void = { _, _, _ in
             completion?(false)
         }
-        self.setImageWithUrlRequest(request as URLRequest,
+        self.bkSetImageWithUrlRequest(request as URLRequest,
                                     placeHolderImage: placeHolderImage,
                                     priority: priority,
                                     success: onSuccess,
                                     failure: onFailure)
     }
     
-    public func setImageWithUrlRequest(_ request:URLRequest,
+    public func bkSetImageWithUrlRequest(_ request:URLRequest,
                                        placeHolderImage:UIImage? = nil,
                                        priority: Operation.QueuePriority = .normal,
                                        success:((_ request:URLRequest?, _ response:URLResponse?, _ image:UIImage, _ fromCache:Bool) -> Void)?,
                                        failure:((_ request:URLRequest?, _ response:URLResponse?, _ error:NSError) -> Void)?)
     {
-        self.cancelImageRequestOperation()
+        self.bkcancelImageRequestOperation()
         
-        if let cachedImage = UIImageView.sharedImageCache().cachedImageForRequest(request) {
+        if let cachedImage = UIImageView.BKSharedImageCache().cachedImageForRequest(request) {
             DispatchQueue.main.async {
                 if success != nil {
                     self.image = cachedImage
@@ -128,7 +128,7 @@ extension UIImageView {
                             else {
                                 self.image = image
                             }
-                            UIImageView.sharedImageCache().cacheImage(image!, forRequest: request)
+                            UIImageView.BKSharedImageCache().cacheImage(image!, forRequest: request)
                         }
                         
                         self.af_requestImageOperation = (nil, nil)
@@ -147,17 +147,17 @@ extension UIImageView {
         UIImageView.af_sharedImageRequestOperationQueue().addOperation(self.af_requestImageOperation.operation!)
     }
     
-    func cancelImageRequestOperation() {
+    func bkcancelImageRequestOperation() {
         self.af_requestImageOperation.operation?.cancel()
         self.af_requestImageOperation = (nil, nil)
     }
 }
 
-func AFImageCacheKeyFromURLRequest(_ request:URLRequest) -> String {
+func BKImageCacheKeyFromURLRequest(_ request:URLRequest) -> String {
     return request.url!.absoluteString
 }
 
-class AFImageCache: NSCache<AnyObject, AnyObject>, AFImageCacheProtocol {
+class BKImageCache: NSCache<AnyObject, AnyObject>, AFImageCacheProtocol {
     func cachedImageForRequest(_ request: URLRequest) -> UIImage? {
         switch request.cachePolicy {
         case NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData,
@@ -167,11 +167,11 @@ class AFImageCache: NSCache<AnyObject, AnyObject>, AFImageCacheProtocol {
             break
         }
         
-        return self.object(forKey: AFImageCacheKeyFromURLRequest(request) as AnyObject) as? UIImage
+        return self.object(forKey: BKImageCacheKeyFromURLRequest(request) as AnyObject) as? UIImage
     }
     
     func cacheImage(_ image: UIImage, forRequest request: URLRequest) {
-        self.setObject(image, forKey: AFImageCacheKeyFromURLRequest(request) as AnyObject)
+        self.setObject(image, forKey: BKImageCacheKeyFromURLRequest(request) as AnyObject)
     }
 }
 

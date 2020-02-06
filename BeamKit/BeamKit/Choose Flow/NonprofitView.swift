@@ -113,7 +113,7 @@ internal class NonprofitView: UIButton {
         }
         self.nonprofit = nonprofit
         if let url = URL(string: nonprofit.image) {            
-            backgroundImage.setImageWithUrl(url, priority: .veryHigh)
+            backgroundImage.bkSetImageWithUrl(url, priority: .veryHigh)
         }
         nameLabel.text = nonprofit.name
         

@@ -87,11 +87,11 @@ class TitleImageView: UIView {
     }
     
     public func setImageWithUrl(_ url:URL, priority: Operation.QueuePriority = .normal) {
-        mainImageView.setImageWithUrl(url, placeHolderImage: nil, priority: priority)
+        mainImageView.bkSetImageWithUrl(url, placeHolderImage: nil, priority: priority)
     }
     
     public func prepareForReuse() {
         mainImageView.image = nil
-        mainImageView.cancelImageRequestOperation()
+        mainImageView.bkcancelImageRequestOperation()
     }
 }

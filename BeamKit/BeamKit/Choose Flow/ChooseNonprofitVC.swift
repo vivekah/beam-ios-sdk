@@ -212,10 +212,10 @@ class VisitHeaderView: UIView {
         let store = transaction.storeNon.store
         if let rectLogo = store?.rectLogo,
             let url = URL(string: rectLogo) {
-            chainLogoImageView.setImageWithUrl(url, priority: .veryHigh)
+            chainLogoImageView.bkSetImageWithUrl(url, priority: .veryHigh)
         } else if let logo = store?.logo,
             let url = URL(string: logo) {
-            chainLogoImageView.setImageWithUrl(url, priority: .veryHigh)
+            chainLogoImageView.bkSetImageWithUrl(url, priority: .veryHigh)
         }
         
        // backButton.tint(.beamGray3)
