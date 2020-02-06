@@ -79,8 +79,8 @@ public class BKTransactionView: UIView {
         let formats = ["H:|[back]|",
                        "V:|[back]|",
                        "H:|-[label]-[button]-|",
-                       "V:|->=5-[label]->=5-|]",
-                       "V:|->=5-[button]->=5-|]"]
+                       "V:|->=5-[label]->=5-|",
+                       "V:|->=5-[button]->=5-|"]
         var constraints: Constraints = NSLayoutConstraint.constraints(withFormats: formats, views: views)
         
         constraints += [NSLayoutConstraint.centerOnY(labelView, in: self),
