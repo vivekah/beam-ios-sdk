@@ -30,6 +30,7 @@ class BKTransactionView: UIView {
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.6
         label.textColor = .white
+        label.text = "THIS IS A TEST OF THE LABEL can it show the text correctly and talk about impact and nonprofits and other beam tings"
         return label
     }()
     
