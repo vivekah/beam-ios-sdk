@@ -17,6 +17,7 @@
 		1B1FC3FF233C13F600A45E87 /* BeamKitContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1FC3FE233C13F600A45E87 /* BeamKitContext.swift */; };
 		1B1FC402233C16CC00A45E87 /* BeamError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1FC401233C16CC00A45E87 /* BeamError.swift */; };
 		1B1FC404233C182F00A45E87 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1FC403233C182F00A45E87 /* Transaction.swift */; };
+		1B226F2223EC9AD100180EB4 /* Beam-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1B1EAC7322C41E8100BB02EB /* Beam-Info.plist */; };
 		1B59B66623E0F60F0012CEDD /* GradientTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B59B66523E0F60E0012CEDD /* GradientTextView.swift */; };
 		1B808754234F721C00C42CF1 /* TitleImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B808753234F721C00C42CF1 /* TitleImageView.swift */; };
 		1B8087582352726300C42CF1 /* ImpactAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8087572352726300C42CF1 /* ImpactAPI.swift */; };
@@ -53,7 +54,7 @@
 		1B05B63A2346850B00C72CA8 /* BeamKitUserAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeamKitUserAPI.swift; sourceTree = "<group>"; };
 		1B1EAC6F22C41E8100BB02EB /* BeamKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BeamKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B1EAC7222C41E8100BB02EB /* beam_ios_sdk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = beam_ios_sdk.h; sourceTree = "<group>"; };
-		1B1EAC7322C41E8100BB02EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1B1EAC7322C41E8100BB02EB /* Beam-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Beam-Info.plist"; sourceTree = "<group>"; };
 		1B1EAC7A22C41EB100BB02EB /* Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Manager.swift; sourceTree = "<group>"; };
 		1B1EAC7C22C41F4300BB02EB /* NonprofitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonprofitView.swift; sourceTree = "<group>"; };
 		1B1EAC7E22C41FAF00BB02EB /* UIView+Beam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Beam.swift"; sourceTree = "<group>"; };
@@ -128,9 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				1BBF120623E3556200C249E9 /* Media.xcassets */,
-				1B1EAC7222C41E8100BB02EB /* beam_ios_sdk.h */,
-				1B1EAC7322C41E8100BB02EB /* Info.plist */,
-				1B226F2123EC966700180EB4 /* Public */,
+				1B226F2123EC966700180EB4 /* Classes */,
 				1BDE5A6D233D4527003443D5 /* Custom UI */,
 				1BDE5A6C233D43AB003443D5 /* Processors */,
 				1BDE5A6B233D438F003443D5 /* Choose Flow */,
@@ -151,15 +150,17 @@
 			path = "UI extensions";
 			sourceTree = "<group>";
 		};
-		1B226F2123EC966700180EB4 /* Public */ = {
+		1B226F2123EC966700180EB4 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				1B1EAC7222C41E8100BB02EB /* beam_ios_sdk.h */,
+				1B1EAC7322C41E8100BB02EB /* Beam-Info.plist */,
 				1B1EAC7A22C41EB100BB02EB /* Manager.swift */,
 				1B1FC3FE233C13F600A45E87 /* BeamKitContext.swift */,
 				1B05B63A2346850B00C72CA8 /* BeamKitUserAPI.swift */,
 				1B1FC401233C16CC00A45E87 /* BeamError.swift */,
 			);
-			path = Public;
+			path = Classes;
 			sourceTree = "<group>";
 		};
 		1B9C1FBA234E3190008BEC08 /* Impact */ = {
@@ -305,6 +306,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B226F2223EC9AD100180EB4 /* Beam-Info.plist in Resources */,
 				1BBF120723E3556200C249E9 /* Media.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -513,7 +515,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = BeamKit/Info.plist;
+				INFOPLIST_FILE = "BeamKit/Classes/Beam-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -543,7 +545,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = BeamKit/Info.plist;
+				INFOPLIST_FILE = "BeamKit/Classes/Beam-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
