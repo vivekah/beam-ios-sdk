@@ -129,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				1BBF120623E3556200C249E9 /* Media.xcassets */,
+				1B1EAC7222C41E8100BB02EB /* beam_ios_sdk.h */,
 				1B226F2123EC966700180EB4 /* Classes */,
 				1BDE5A6D233D4527003443D5 /* Custom UI */,
 				1BDE5A6C233D43AB003443D5 /* Processors */,
@@ -153,7 +154,6 @@
 		1B226F2123EC966700180EB4 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				1B1EAC7222C41E8100BB02EB /* beam_ios_sdk.h */,
 				1B1EAC7322C41E8100BB02EB /* Beam-Info.plist */,
 				1B1EAC7A22C41EB100BB02EB /* Manager.swift */,
 				1B1FC3FE233C13F600A45E87 /* BeamKitContext.swift */,
