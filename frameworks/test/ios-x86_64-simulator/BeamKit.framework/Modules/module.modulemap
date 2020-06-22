@@ -1,4 +1,0 @@
-framework module BeamKit {
-  header "BeamKit-Swift.h"
-  requires objc
-}
