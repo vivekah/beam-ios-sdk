@@ -6,28 +6,44 @@
 //  Copyright © 2019 Beam Impact. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+extension Notification.Name {
+    static let _bkDidUpdateImpact = Notification.Name("bk_did_update_impact")
+    static let _bkDidUpdateCommunityImpact = Notification.Name("bk_did_update_community")
+}
 
 class BKImpactContext {
     
     lazy var api: ImpactAPI = .init()
     
-    var impact: BKImpact? = nil
-    var communityImpact: BKImpact? = nil
+    var impact: BKImpact? = nil {
+        didSet {
+            NotificationCenter.default.post(name: ._bkDidUpdateImpact, object: nil)
+        }
+    }
+    var communityImpact: BKImpact? = nil {
+        didSet {
+            NotificationCenter.default.post(name: ._bkDidUpdateCommunityImpact, object: nil)
+        }
+    }
 
     var numberOfNonprofits: Int {
         return self.impact?.nonprofits.count ?? 0
     }
     
-    var nonprofits: [Nonprofit]? {
+    var nonprofits: [BKNonprofit]? {
         return self.impact?.nonprofits
     }
     
     // TODO surface errors in UI slash to devs
     
-    func loadImpact() {
+    func loadImpact(_ completion: ((BKImpact?, BeamError) -> Void)? = nil) {
         api.getImpact { impact, error in
-            guard !(error != nil) || error == BeamError.none,
+            defer {
+                completion?(impact, error)
+            }
+            guard error == BeamError.none,
                 let impact = impact else {
                     return
             }
@@ -37,7 +53,7 @@ class BKImpactContext {
     
     func loadCommunityImpact() {
         api.getCommunityImpact() { impact, error in
-            guard !(error != nil) || error == BeamError.none,
+            guard error == BeamError.none,
                 let impact = impact else {
                     return
             }
@@ -45,7 +61,7 @@ class BKImpactContext {
         }
     }
     
-    func getImpact(for nonprofit: Nonprofit, _ completion: ((Nonprofit?, BeamError) -> Void)? = nil) {
+    func getImpact(for nonprofit: BKNonprofit, _ completion: ((BKNonprofit?, BeamError) -> Void)? = nil) {
         api.getImpact(for: nonprofit, completion)
     }
 }

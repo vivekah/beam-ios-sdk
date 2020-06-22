@@ -81,23 +81,23 @@ class BKImpactSlideView: UIView {
         let views: [String: UIView] = ["list": myImpactLabel,
                                        "map": globalLabel,
                                        "slide": slideIndicator]
-        let formats: [String] = ["V:|[list]-5-[slide(3)]|",
+        let formats: [String] = ["V:|-5-[list]-7-[slide(3)]|",
                                  "V:|[map]-8-|",
                                  "H:[slide]->=5-|",
-                                 "H:|[list]-7-[map]-5-|"]
+                                 "H:|[list]-12-[map]-5-|"]
         
         var constraints: [NSLayoutConstraint] =
             NSLayoutConstraint.constraints(withFormats: formats, views: views)
         
         constraints +=
-            [
-             impactWidth,
+            [impactWidth,
              impactCenter]
         
         NSLayoutConstraint.activate(constraints)
     }
     
     func setupGestures() {
+        isUserInteractionEnabled = true
         let listGR = UITapGestureRecognizer(target: self, action: #selector(didSelectMyImpact))
         myImpactLabel.addGestureRecognizer(listGR)
         let mapGR = UITapGestureRecognizer(target: self, action: #selector(didSelectGlobal))
@@ -132,8 +132,8 @@ class BKImpactSlideView: UIView {
     
     override var intrinsicContentSize: CGSize {
         let width = globalLabel.intrinsicContentSize.width +
-                myImpactLabel.intrinsicContentSize.width + 12
-        let height = myImpactLabel.intrinsicContentSize.height + 8
+                myImpactLabel.intrinsicContentSize.width + 17
+        let height = myImpactLabel.intrinsicContentSize.height + 15
         return CGSize(width: width, height: height)
     }
 }
@@ -147,22 +147,27 @@ class BKSelectionLabel: UILabel {
     private var _tintColor: UIColor {
         return self.isSelected ? selectedColor : defaultColor
     }
-    private let titleLabel: UILabel = {
-        let label = UILabel(frame: .zero)
-        label.textAlignment = .left
-        label.numberOfLines = 1
-        label.backgroundColor = .clear
-        label.adjustsFontSizeToFitWidth = true
-        label.minimumScaleFactor = 0.8
-        label.textColor = .beamGray3
-        label.font = .beamSemiBold(size: 12)
-        label.lineBreakMode = .byTruncatingTail
-        return label
-    }()
+    private var selectedFont: UIFont? = .beamSemiBold(size: 14)
+    private var defaultFont: UIFont? = .beamRegular(size: 14)
+    private var _font: UIFont? {
+        return self.isSelected ? selectedFont : defaultFont
+    }
+//    private let titleLabel: UILabel = {
+//        let label = UILabel(frame: .zero)
+//        label.textAlignment = .left
+//        label.numberOfLines = 1
+//        label.backgroundColor = .clear
+//        label.adjustsFontSizeToFitWidth = true
+//        label.minimumScaleFactor = 0.8
+//        label.textColor = .beamGray3
+//        label.font = .beamSemiBold(size: 12)
+//        label.lineBreakMode = .byTruncatingTail
+//        return label
+//    }()
     
     init(title: String) {
         super.init(frame: .zero)
-        titleLabel.text = title
+        text = title
         setupView()
     }
     
@@ -175,17 +180,19 @@ class BKSelectionLabel: UILabel {
         numberOfLines = 1
         backgroundColor = .clear
         adjustsFontSizeToFitWidth = true
-        minimumScaleFactor = 0.8
+        minimumScaleFactor = 0.6
         textColor = .beamGray3
-        font = .beamSemiBold(size: 12)
+        font = .beamSemiBold(size: 14)
         lineBreakMode = .byTruncatingTail
+        isUserInteractionEnabled = true
     }
 
     func toggle(selected: Bool, animated: Bool = true) {
         isSelected = selected
         UIView.animate(withDuration: 0.1) { [weak self] in
             guard let `self` = self else { return }
-            self.titleLabel.textColor = self._tintColor
+            self.textColor = self._tintColor
+          // self.font = self._font
         }
     }
 }

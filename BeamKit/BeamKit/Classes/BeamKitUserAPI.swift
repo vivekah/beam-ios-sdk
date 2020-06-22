@@ -6,7 +6,7 @@
 //  Copyright © 2019 Beam Impact. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 private extension String {
     var isDigits: Bool {
@@ -22,7 +22,7 @@ private extension DateFormatter {
         self.dateFormat = "yyyy-MM-dd"
         self.timeZone = TimeZone(abbreviation: "UTC")
         self.locale = Locale(identifier: "en_US_POSIX")
-        var date = self.date(from: dateString)
+        let date = self.date(from: dateString)
         return date
     }
 }
@@ -33,7 +33,6 @@ class BeamKitUserAPI {
     func registerUser(options: JSON?,
                       _ completion: ((String?, BeamError) -> Void)? = nil) {
     
-        // TODO invalid configuration
         var body: JSON?
         do {
             body = try registerUserBody(from: options)
@@ -112,7 +111,7 @@ class BeamKitUserAPI {
             guard let date = DateFormatter().birthdate(bday) else {
                 throw BeamRegisterUserError.invalidBirthdate
             }
-            body["birthdate"] = bday
+            body["birthdate"] = date.description
         }
         
         return body

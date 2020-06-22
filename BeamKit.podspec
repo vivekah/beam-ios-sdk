@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "BeamKit"
-  s.version      = "1.0.0"
+  s.version      = "1.0.4"
   s.summary      = "BeamKit allows companies to integrate the Beam experience into their app."
 
   # This description is used to generate tags and improve search results.
@@ -69,7 +69,9 @@ Pod::Spec.new do |s|
   #
 
   s.source       = { :git => "https://github.com/vivekah/beam-ios-sdk.git", :tag => "#{s.version}" }
-
+#  s.source = { :http => "https://ios-pod.s3-us-west-2.amazonaws.com/BeamKit.zip"}
+#  s.ios.vendored_frameworks = 'BeamKit.framework'
+#  s.ios.deployment_target = '8.0'
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
@@ -93,8 +95,9 @@ Pod::Spec.new do |s|
   #  non-essential files like tests, examples and documentation.
   #
 
-  # s.resource  = "icon.png"
-  # s.resources = "Resources/*.png"
+  #s.resource  = "icon.png"
+  s.resources = "BeamKit/BeamKit/*.xcassets", "BeamKit/BeamKit/**/*.ttf"
+  # s.resources = 
 
   # s.preserve_paths = "FilesToSave", "MoreFilesToSave"
 
@@ -106,7 +109,7 @@ Pod::Spec.new do |s|
   #
 
   s.framework = "UIKit"
-  s.dependency 'Alamofire', '~> 4.7'
+  s.dependency 'Alamofire'
 
 
   # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #

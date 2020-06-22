@@ -6,45 +6,23 @@
 //  Copyright © 2019 Beam Impact. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
-//class Transaction {
-//    let transactionID: String
-//    let storeID: String
-//    let transAmt: Float
-//
-//    let multiplier: Int
-//    var isRedeemed: Bool = false
-//
-//    var nonprofits: [Nonprofit]? = nil
-//    var lastNonprofit: Nonprofit? = nil
-//    var storeName: String = ""
-//    var baseDonation: Double = 0.0
-//    var rectLogo: String? = nil
-//    var logo: String? = nil
-//    var percent: Double = 0.0
-//
-//    init(with storeID: String,
-//         transactionID: String,
-//         transAmt: Float,
-//         multiplier: Int) {
-//        self.storeID = storeID
-//        self.transactionID = transactionID
-//        self.transAmt = transAmt
-//        self.multiplier = multiplier
-//    }
-//}
+extension Notification.Name {
+    static let _bkdidSelectNonprofit = Notification.Name("bk_did_select_nonprofit")
+    static let _bkdidCompleteTransaction = Notification.Name("bk_did_complete_transaction")
+}
 
-internal class Nonprofit: NSObject {
+internal class BKNonprofit: NSObject {
     var cause: String?
     let id: Int
     let missionDescription: String?
     var image: String
     var impactDescription: String
     var name: String
-    var targetDonations: Float
-    var totalDonations: Float
-    var storeIDs: Set<Int> = .init()
+    var targetDonations: CGFloat
+    var totalDonations: CGFloat
+    var storeIDs: Set<String> = .init()
     
     init(cause: String,
          id: Int,
@@ -52,8 +30,8 @@ internal class Nonprofit: NSObject {
          image: String,
          impactDescription: String,
          name: String,
-         targetDonations: Float,
-         totalDonations: Float) {
+         targetDonations: CGFloat,
+         totalDonations: CGFloat) {
         self.cause = cause
         self.id = id
         self.missionDescription = description
@@ -67,39 +45,59 @@ internal class Nonprofit: NSObject {
 }
 
 // TODO lookup internal v private
-// RENAME TO BKSTORE?
-internal class Store: NSObject {
+internal class BKStore: NSObject {
     var logo: String?
     var rectLogo: String?
     var name: String?
-    var percent: Float?
-    let id: Int
+    var percent: CGFloat?
+    var amount: CGFloat?
+    var donationName: String?
+    let id: String
     
-    init(id: Int,
+    init(id: String,
          image: String? = nil,
          rect: String? = nil,
          name: String? = nil) {
         self.id = id
         self.logo = image
         self.rectLogo = rect
+        self.name = name
         super.init()
     }
 }
 
-class StoreNonprofitsModel: NSObject {
-    var nonprofits: [Nonprofit]?
-    var lastNonprofit: Nonprofit?
-    var store: Store?
+class BKStoreNonprofitsModel: NSObject {
+    var nonprofits: [BKNonprofit]?
+    var lastNonprofit: BKNonprofit?
+    var store: BKStore?
 }
 
-class Transaction: NSObject {
-    let storeNon: StoreNonprofitsModel
-    let amount: Float
-    var chosenNonprofit: Int? = nil
+class BKTransaction: NSObject {
+    let storeNon: BKStoreNonprofitsModel
+    let amount: CGFloat
+    var chosenNonprofit: BKNonprofit? = nil {
+        didSet {
+            NotificationCenter.default.post(name: ._bkdidSelectNonprofit,
+                                            object: self,
+                                            userInfo: ["transaction": self])
+        }
+    }
+    var id: Int?
+    var canMatch: Bool = false
+    var userDidMatch: Bool = false
+    var isRedeemed: Bool = false {
+        didSet {
+            guard isRedeemed == true else { return }
+            NotificationCenter.default.post(name: ._bkdidCompleteTransaction,
+                                             object: self,
+                                             userInfo: ["transaction": self])
+        }
+    }
     
-    init(storeNon: StoreNonprofitsModel, amount: Float) {
+    init(storeNon: BKStoreNonprofitsModel, amount: CGFloat) {
         self.storeNon = storeNon
         self.amount = amount
         super.init()
     }
 }
+

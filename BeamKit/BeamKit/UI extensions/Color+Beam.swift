@@ -18,20 +18,52 @@ extension UIColor {
         return UIColor(red: (133.0/255.0), green: (188.0/255.0), blue: (215.0/255.0), alpha: 1.0)
     }
     
+    static var _bottomColor: UIColor = UIColor(red: (247.0/255.0), green: (206.0/255.0), blue: (104.0/255.0), alpha: 1.0)
+    
     internal class var beamGradientYellow: UIColor {
         return UIColor(red: (251.0/255.0), green: (235.0/255.0), blue: (99.0/255.0), alpha: 1.0)
     }
     
+    class func register(bottom: UIColor) {
+        _bottomColor = bottom
+    }
+    
+    static var _topColor: UIColor = UIColor(red: (251.0/255.0), green: (171.0/255.0), blue: (126.0/255.0), alpha: 1.0)
+    
     internal class var beamGradientOrange: UIColor {
-        return UIColor(red: (255.0/255.0), green: (148.0/255.0), blue: (75.0/255.0), alpha: 1.0)
+        return  UIColor(red: (255.0/255.0), green: (148.0/255.0), blue: (75.0/255.0), alpha: 1.0)
+    }
+    
+    class func register(top: UIColor) {
+        _topColor = top
     }
     
     internal class var beamGradientLightOrange: UIColor {
-        return UIColor(red: (251.0/255.0), green: (171.0/255.0), blue: (126.0/255.0), alpha: 1.0)
+        return _topColor
     }
     
     internal class var beamGradientLightYellow: UIColor {
-        return UIColor(red: (247.0/255.0), green: (206.0/255.0), blue: (104.0/255.0), alpha: 1.0)
+        return _bottomColor
+    }
+    
+    static var _progress: UIColor?
+    
+    internal class var progressColor: UIColor? {
+        return _progress
+    }
+    
+    class func register(progress: UIColor) {
+        _progress = progress
+    }
+    
+    static var _accent: UIColor = UIColor.white
+    
+    internal class var accent: UIColor {
+        return _accent
+    }
+    
+    class func register(accent: UIColor) {
+        _accent = accent
     }
 }
 
@@ -67,8 +99,11 @@ extension UIColor {
 
 extension UIColor {
     internal class var beamOrange4: UIColor {
-        return UIColor(red: (247.0/255.0), green: (131.0/255.0), blue: (50.0/255.0), alpha: 1.0)
+        return _mainOrange
     }
+    
+    static var _mainOrange: UIColor = UIColor(red: (247.0/255.0), green: (131.0/255.0), blue: (50.0/255.0), alpha: 1.0)
+    
     internal class var beamOrange3: UIColor {
         return UIColor(red: (247.0/255.0), green: (153.0/255.0), blue: (87.0/255.0), alpha: 1.0)
     }
@@ -78,6 +113,12 @@ extension UIColor {
     internal class var beamOrange1: UIColor {
         return UIColor(red: (254.0/255.0), green: (241.0/255.0), blue: (231.0/255.0), alpha: 1.0)
     }
+    
+    class func register(main: UIColor) {
+        _mainOrange = main
+    }
+    
+    
 }
 
 // BLUES

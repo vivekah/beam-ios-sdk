@@ -6,9 +6,9 @@
 //  Copyright © 2019 Beam Impact. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
-enum BKEnvironment {
+public enum BKEnvironment {
     case production
     case staging
 }
@@ -18,13 +18,18 @@ class BeamKitContext {
     
     private(set) var userID: String? = nil
     lazy var userAPI: BeamKitUserAPI = .init()
-    lazy var nonprofits: [Nonprofit] = .init() // todo figure ordering
-    
+    lazy var nonprofits: [BKNonprofit] = .init() // todo figure ordering
+    lazy var chooseContext: BKChooseNonprofitContext = .init()
+    lazy var chooseFlow: BKChooseNonprofitFlow = .init()
+    lazy var impactContext: BKImpactContext = .init()
+    let bundle = Bundle(for: BKManager.self)
+
     var token: String? = nil
     
     func register(with key: String, environment: BKEnvironment) {
         self.token = key
         Network.shared.environment = environment
+        impactContext.loadImpact()
     }
     
     func registerUser(id: String?,
@@ -38,7 +43,18 @@ class BeamKitContext {
             return
         }
             
-        userAPI.registerUser(options: info, completion)
+        userAPI.registerUser(options: info) { [weak self] newUserID, error in
+            defer {
+                completion?(newUserID, error)
+            }
+            guard let `self` = self else { return }
+            self.userID = newUserID
+        }
     }
     
+    //Returns Transaction ID
+    func complete(_ transaction: BKTransaction,
+                  _ completion: ((Int?, BeamError) -> Void)? = nil) {
+        chooseFlow.complete(transaction, completion)
+    }
 }

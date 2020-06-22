@@ -71,4 +71,15 @@ extension NSLayoutConstraint {
                                   multiplier: 1.0,
                                   constant: constant)
     }
+        
+        class func square(_ view: UIView) -> NSLayoutConstraint {
+            return NSLayoutConstraint(item: view,
+                                        attribute: .width,
+                                        relatedBy: .equal,
+                                        toItem: view,
+                                        attribute: .height,
+                                        multiplier: 1.0,
+                                        constant: 0.0)
+          }
+
 }

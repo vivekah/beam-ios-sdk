@@ -6,9 +6,9 @@
 //  Copyright © 2019 Beam Impact. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
-public enum BeamError {
+public enum BeamError: Error {
     case invalidUser
     case invalidStore
     case invalidCredentials

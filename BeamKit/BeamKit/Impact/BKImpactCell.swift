@@ -11,7 +11,17 @@ import UIKit
 class BKImpactCell: UITableViewCell {
     //Image
     let titleImageView: TitleImageView = .init()
-    let causeLabel: UILabel = .init()
+    let causeLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.textAlignment = .center
+        label.numberOfLines = 1
+        label.backgroundColor = .clear
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.8
+        label.textColor = .white
+        label.font = .beamBold(size: 12)
+        return label
+    }()
     //percentage label
     let percentageView: GradientTextView = .init(with: [UIColor.beamGradientLightYellow.cgColor,
                                                         UIColor.beamGradientLightOrange.cgColor],
@@ -25,13 +35,14 @@ class BKImpactCell: UITableViewCell {
         label.backgroundColor = .clear
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.8
-        label.textColor = .beamOrange4
+        label.textColor = .gray //.beamOrange4
         label.font = .beamBold(size: 15)
         label.text = "funded towards total goal"
         return label
     }()
     // progress bar
     private let progressBar: GradientProgressBar = .init()
+    let separatorLine: UIView = .init(with: .beamGray1)
 
     lazy var percWidth: NSLayoutConstraint =
         NSLayoutConstraint(item: self.percentageView,
@@ -49,6 +60,7 @@ class BKImpactCell: UITableViewCell {
         addSubview(percentageView.usingConstraints())
         addSubview(descriptionLabel.usingConstraints())
         addSubview(progressBar.usingConstraints())
+        addSubview(separatorLine.usingConstraints())
         backgroundColor = .white
         titleImageView.clipsToBounds = true
         setupConstraints()
@@ -71,27 +83,30 @@ class BKImpactCell: UITableViewCell {
     func setupConstraints() {
         let views: Views = ["title": titleImageView,
                             "cause": causeLabel,
+                            "sep": separatorLine,
                             "desc": descriptionLabel,
                             "perc": percentageView,
                             "bar": progressBar]
         
         let formats: [String] = ["H:|[title]|",
                                  "H:|-30-[bar]-30-|",
+                                 "H:|-30-[sep]-30-|",
                                  "H:|-30-[cause]-30-|",
                                  "H:|-30-[perc]-8-[desc]-30-|",
-                                 "V:|[title(180)]-14-[perc]-[bar(8)]-16-|",
-                                 "V:[desc]-[bar]",
+                                 "V:|[title(180)]-14-[perc]-5-[bar(8)]-16-[sep(1)]-16-|",
+                                 "V:[title]->=3-[desc]-[bar]",
                                  "V:|-8-[cause]"]
         var constraints: Constraints = NSLayoutConstraint.constraints(withFormats: formats, views: views)
         percWidth.constant = percentageView.intrinsicContentSize.width
         
         constraints += [NSLayoutConstraint.centerOnY(descriptionLabel, in: percentageView),
-                        percWidth]
+                        percWidth,
+                        NSLayoutConstraint.centerOnX(causeLabel, in: self)]
         
         NSLayoutConstraint.activate(constraints)
     }
     
-    func configure(with impact: Nonprofit) {
+    func configure(with impact: BKNonprofit) {
         let desc = impact.impactDescription
         descriptionLabel.text = "of the way to funding \(desc)"
         titleImageView.title = impact.name
@@ -108,7 +123,7 @@ class BKImpactCell: UITableViewCell {
         layoutIfNeeded()
     }
     
-    func setupProgress(with impact: Nonprofit) {
+    func setupProgress(with impact: BKNonprofit) {
 
         let total = impact.totalDonations * 100
         let target = impact.targetDonations * 100
@@ -118,6 +133,11 @@ class BKImpactCell: UITableViewCell {
 
         let percent: Int = Int((CGFloat(progressBar.numerator) / CGFloat(progressBar.denominator)) * 100)
         percentageView.text = "\(percent)%"
+    }
+    
+    override var intrinsicContentSize: CGSize {
+        let height = 53 + 17 + 180 + descriptionLabel.intrinsicContentSize.height
+        return CGSize(width: superview?.bounds.width ?? 0, height: height)
     }
     
     override func prepareForReuse() {

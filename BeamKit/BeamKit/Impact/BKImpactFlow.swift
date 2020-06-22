@@ -11,20 +11,34 @@ import UIKit
 
 class BKImpactFlow {
     
-    lazy var context: BKImpactContext = .init()
+    var context: BKImpactContext {
+        return BeamKitContext.shared.impactContext
+    }
     
     fileprivate lazy var impactVC: BKImpactVC = .init(context: self.context,
                                                       flow: self)
-    fileprivate let communityVC: BKCommunityImpactVC = .init(nibName: nil,
-                                                             bundle: nil)
+    fileprivate lazy var communityVC: BKCommunityImpactVC = .init(context: self.context,
+                                                                  flow: self)
     
     lazy var currentView: UIViewController = self.impactVC
     
     func showFullImpact(from viewController: UIViewController) {
+        context.loadCommunityImpact()
         let fullImpact = BKFullImpactVC(context: context, flow: self)
         viewController.present(fullImpact,
                                animated: true,
                                completion: nil)
+    }
+    
+    func showJustCommunityImpact(from viewController: UIViewController) {
+        context.loadCommunityImpact()
+
+        let impact = BKJustCommunityImpactVC(context: context, flow: self)
+        viewController.present(impact, animated: true, completion: nil)
+    }
+    
+    func didDismissFullImpact() {
+        currentView = impactVC
     }
 }
 

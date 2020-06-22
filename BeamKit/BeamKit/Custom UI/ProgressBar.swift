@@ -15,14 +15,18 @@ internal enum BackgroundTintType {
 
 internal class GradientProgressBar: UIView {
     var tintType: BackgroundTintType
-    var numerator: Float = 0
-    var denominator: Float = 0
+    var numerator: CGFloat = 0
+    var denominator: CGFloat = 0
     
     var rounded: Bool = true {
         didSet {
             setNeedsLayout()
             layoutIfNeeded()
         }
+    }
+    
+    var progressColorExists: Bool {
+        return UIColor.progressColor != nil
     }
     
     private let gradientView: UIView = .init(with: .purple)
@@ -74,9 +78,14 @@ internal class GradientProgressBar: UIView {
         percentFillView.clipsToBounds = true
         addSubview(gradientView)
         gradientView.addSubview(percentFillView)
-        gradientView.layer.addSublayer(rainbowGradient)
-        
+        if progressColorExists {
+            percentFillView.backgroundColor = UIColor.progressColor
+            gradientView.backgroundColor = UIColor.progressColor
+        } else {
+            gradientView.layer.addSublayer(rainbowGradient)
+        }
         gradientView.mask = percentFillView
+
     }
     
     var useBlur: Bool {
