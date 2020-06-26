@@ -13,21 +13,17 @@ class BKImpactVC: UIViewController {
     weak var context: BKImpactContext?
     weak var flow: BKImpactFlow?
     
-    let impactIdentifier = "impact_cell"
+    let impactIdentifier = "bk_impact_cell"
     let headerView: UIView = .init(with: .clear)
     
-    // let separatorLine: UIView = .init(with: .beamGray1)
-    // nonprofits you've supported
-    // TODO -- update to reflect chain
+    let separatorLine: UIView = .init(with: .beamGray1)
     let nonprofitLabel: GradientTextView = .init(with: [UIColor.beamGradientLightYellow.cgColor,
                                                         UIColor.beamGradientLightOrange.cgColor],
                                                  text: "Nonprofits You've Supported",
-                                                 font: UIFont.beamBold(size: 20))
-    //table
-    // todo slider
+                                                 font: UIFont.beamBold(size: 18))
     private let impactTableView: UITableView = {
         let table = UITableView(frame: .zero, style: .plain)
-        table.rowHeight = 340
+       // table.rowHeight = 340
         table.estimatedRowHeight = 340
         table.separatorInset = .zero
         table.layoutMargins = .zero
@@ -54,42 +50,49 @@ class BKImpactVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        headerView.addSubview(nonprofitLabel)
+       // headerView.addSubview(nonprofitLabel.usingConstraints())
+        //headerView.addSubview(separatorLine.usingConstraints())
         impactTableView.dataSource = self
         impactTableView.delegate = self
-        setupHeader()
         impactTableView.tableHeaderView = headerView
         impactTableView.register(BKImpactCell.self,
                                  forCellReuseIdentifier: impactIdentifier)
         listen()
+        //setupConstraints()
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        setupHeader()
-    }
-    
-    func setupHeader() {
-        let inset: CGFloat = 30
-        let viewWidth = view.bounds.width
-        headerView.frame = CGRect(x: 0, y: 0, width: viewWidth, height: 176)
-        let width = viewWidth - (inset * 2)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+//        headerView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: nonprofitLabel.intrinsicContentSize.height + 20)
+             headerView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 15)
+        impactTableView.reloadData()
 
-      //  separatorLine.frame = CGRect(x: inset, y: 110, width: width, height: 1)
-        nonprofitLabel.frame = CGRect(x: inset, y: 112, width: width, height: 65)
+    }
+    
+    func setupConstraints() {
+
+        let views: Views = ["header": headerView,
+                            "line": separatorLine,
+                            "label": nonprofitLabel]
+        let formats: [String] = ["H:|-20-[label]-20-|",
+                                 "H:|[line]|",
+                                 "V:|-4-[label]-4-[line(1)]-8-|"]
+        let constraints: Constraints =
+            NSLayoutConstraint.constraints(withFormats: formats, views: views)
+        
+        NSLayoutConstraint.activate(constraints)
     }
     
     func listen() {
-        // TODO Evaluate 
-//        AppContext.shared.notificationCenter.addObserver(self,
-//                                                         selector: #selector(didLoadImpact),
-//                                                         name: .didLoadImpact,
-//                                                         object: nil)
-//
-//        AppContext.shared.notificationCenter.addObserver(self,
-//                                                         selector: #selector(donationsUpdate),
-//                                                         name: .donationsUpdate,
-//                                                         object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(didLoadImpact),
+                                               name: ._bkDidUpdateImpact,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(donationsUpdate),
+                                               name: ._bkdidCompleteTransaction,
+                                               object: nil)
+
     }
     
 

@@ -10,11 +10,14 @@ import UIKit
 
 class BKImpact {
     let chainName: String
-    let nonprofits: [Nonprofit]
+    let nonprofits: [BKNonprofit]
+    let logo: String?
     
     init(chainName: String,
-         nonprofits: [Nonprofit]) {
+         logo: String?,
+         nonprofits: [BKNonprofit]) {
         self.chainName = chainName
+        self.logo = logo
         self.nonprofits = nonprofits
     }
 }

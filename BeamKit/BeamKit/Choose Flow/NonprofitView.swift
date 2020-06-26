@@ -9,11 +9,11 @@
 import UIKit
 
 protocol NonprofitViewDelegate {
-    func didSelect(_ id: Nonprofit?)
+    func didSelect(_ id: BKNonprofit?)
 }
 
 internal class NonprofitView: UIButton {
-    var nonprofit: Nonprofit?
+    var nonprofit: BKNonprofit?
     var delegate: NonprofitViewDelegate?
     
     lazy var selectTap = UITapGestureRecognizer(target: self, action: #selector(didTap))
@@ -36,7 +36,7 @@ internal class NonprofitView: UIButton {
     
     let nameLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.font = UIFont.beamBold(size: 24)
+        label.font = UIDevice.current.is5or4Phone ? UIFont.beamBold(size: 20) : UIFont.beamBold(size: 24)
         label.textAlignment = .left
         label.numberOfLines = 1
         label.backgroundColor = .clear
@@ -50,7 +50,9 @@ internal class NonprofitView: UIButton {
     
     let arrowButton: UIButton = {
         let button = UIButton(frame: .zero)
-        button.setImage(#imageLiteral(resourceName: "NonprofitArrow"), for: .normal)
+        let bundle = BeamKitContext.shared.bundle
+        let image = UIImage(named: "NonprofitArrow", in: bundle, compatibleWith: nil)
+        button.setImage(image, for: .normal)
         button.imageView?.contentMode = .scaleToFill
         button.backgroundColor = .clear
         return button
@@ -82,11 +84,13 @@ internal class NonprofitView: UIButton {
     
     let causeLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.font = UIFont.beamRegular(size: 12.0)
+        label.font = UIDevice.current.is5or4Phone ? UIFont.beamRegular(size: 11.0) : UIFont.beamRegular(size: 12.0)
         label.textAlignment = .left
         label.numberOfLines = 1
         label.textColor = .white
         label.backgroundColor = .clear
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.8
         return label
     }()
     
@@ -106,13 +110,13 @@ internal class NonprofitView: UIButton {
         beamGradientLayer.frame = infoView.bounds
     }
     
-    func configure(with nonprofit: Nonprofit?) {
+    func configure(with nonprofit: BKNonprofit?) {
         guard let nonprofit = nonprofit else {
             self.isHidden = true
             return
         }
         self.nonprofit = nonprofit
-        if let url = URL(string: nonprofit.image) {            
+        if let url = URL(string: nonprofit.image) {
             backgroundImage.bkSetImageWithUrl(url, priority: .veryHigh)
         }
         nameLabel.text = nonprofit.name

@@ -6,11 +6,11 @@
 //  Copyright © 2019 Beam Impact. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class ImpactAPI {
     
-    func getImpact(_ completion: ((BKImpact?, BeamError?)-> Void)? = nil) {
+    func getImpact(_ completion: ((BKImpact?, BeamError)-> Void)? = nil) {
         guard let userID = BeamKitContext.shared.userID else {
             completion?(nil, .invalidUser)
             return
@@ -24,20 +24,21 @@ class ImpactAPI {
             }
             let impact = ImpactAPI.parseNon(impactJSON)
          
-            completion?(impact, BeamError.none)
+            completion?(impact, .none)
         }
         
         let errorHandler: (ErrorType) -> Void = { error in
             BKLog.error("See Impact Error")
             completion?(nil, .networkError)
         }
-        Network.shared.get(urlPath: "impact?user=\(userID)",
+        Network.shared.get(urlPath: "impact/?user=\(userID)",
         successJSONHandler: successHandler,
         errorHandler: errorHandler)
     }
     
-    func getImpact(for nonprofit: Nonprofit, _ completion: ((Nonprofit?, BeamError) -> Void)? = nil) {
+    func getImpact(for nonprofit: BKNonprofit, _ completion: ((BKNonprofit?, BeamError) -> Void)? = nil) {
         guard let userID = BeamKitContext.shared.userID else {
+            BKLog.error("Invalid User Error")
             completion?(nil, .invalidUser)
             return
         }
@@ -63,7 +64,7 @@ class ImpactAPI {
                            errorHandler: errorHandler)
     }
     
-    func getCommunityImpact(_ completion: ((BKImpact?, BeamError?) -> Void)? = nil) {
+    func getCommunityImpact(_ completion: ((BKImpact?, BeamError) -> Void)? = nil) {
         
         let successHandler: (JSON?) -> Void = {  impactJSON in
             guard let impactJSON = impactJSON else {
@@ -73,7 +74,7 @@ class ImpactAPI {
             }
             let impact = ImpactAPI.parseNon(impactJSON)
          
-            completion?(impact, BeamError.none)
+            completion?(impact, .none)
         }
         
         let errorHandler: (ErrorType) -> Void = { error in
@@ -86,17 +87,15 @@ class ImpactAPI {
     }
     
     // TODO -- audit private denotations
-    // NOTE: I really like the error messages here **pats own back**
-    // TODO -- remove extraneous messagesss of self-support
-    private class func parse(_ json: JSON, into nonprofit: Nonprofit) -> Nonprofit? {
+    private class func parse(_ json: JSON, into nonprofit: BKNonprofit) -> BKNonprofit? {
         guard let chain = json["chain"] as? JSON,
             let name = chain["name"] as? String,
             let cause = json["cause"] as? String,
             let image = json["image"] as? String,
             let desc = json["impact_description"] as? String,
             let impact = json["impact"] as? JSON,
-            let total_donated = impact["total_donated"] as? Float,
-            let target_donation = impact["target_donation_amount"] as? Float else { return nil }
+            let total_donated = impact["total_donated"] as? CGFloat,
+            let target_donation = impact["target_donation_amount"] as? CGFloat else { return nil }
         
         if !name.isEmpty,
             name != nonprofit.name {
@@ -120,7 +119,7 @@ class ImpactAPI {
         guard let chain = json["chain"] as? JSON,
             let name = chain["name"] as? String  else { return nil }
         
-        var nonprofits: [Nonprofit] = .init()
+        var nonprofits: [BKNonprofit] = .init()
         if let nonprofitJSON = json["nonprofits"] as? [JSON] {
             for non in nonprofitJSON  {
                 let parsed_nonprofit = NonprofitAPI.parseNonprofitJSON(non)
@@ -128,7 +127,9 @@ class ImpactAPI {
             }
         }
         
-        return BKImpact(chainName: name, nonprofits: nonprofits)
+        let logo = chain["rect_logo"] as? String ?? chain["logo"] as? String ?? nil
+        
+        return BKImpact(chainName: name, logo: logo, nonprofits: nonprofits)
     }
     
 }

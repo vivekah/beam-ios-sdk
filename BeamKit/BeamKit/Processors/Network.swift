@@ -6,10 +6,8 @@
 //  Copyright © 2019 Beam Impact. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import Alamofire
-
-// TODO LOGGING AUDIT HERE
 
 typealias JSON = [String: Any]
 typealias ErrorMessage = String
@@ -23,7 +21,7 @@ extension HTTPMethod {
     }
 }
 
-enum ErrorType { // Todo :: workshop name
+enum ErrorType {
     case invalidURL
     case failedToEncode
     case failWithStatus(Int, String?, JSON?)
@@ -57,12 +55,16 @@ class Network {
     private let reachabilityManager: NetworkReachabilityManager? = NetworkReachabilityManager()
     var environment: BKEnvironment = .staging
     
+    var isStaging: Bool {
+        return environment == .staging
+    }
+    
     lazy var baseURL: String = {
         switch self.environment {
         case .staging:
             return "https://staging.sdk.beamimpact.com/api/v1/"
         case .production:
-            return "https://production.sdk.beamimpact.com/api/v1/"
+            return "https://prod.sdk.beamimpact.com/api/v1/"
         }
     }()
     
@@ -82,7 +84,7 @@ class Network {
         var headers:[String: String] = ["Content-Type": "application/json"]
         
         if let token = BeamKitContext.shared.token {
-            headers["Authorization"] = "API-Key " + token
+            headers["Authorization"] = "Api-Key " + token
         }
         return headers
     }
@@ -127,6 +129,18 @@ extension Network {
                          errorHandler: errorHandler)
     }
     
+    @discardableResult
+    func patch(urlPath: String,
+                body: JSON? = nil,
+                successJSONHandler: @escaping (JSON?) -> Void,
+                errorHandler: @escaping ErrorHandler) -> URLSessionDataTask? {
+        
+        return startTask(method: .patch,
+                         urlPath: urlPath,
+                         successHandler: successJSONHandler,
+                         errorHandler: errorHandler)
+    }
+    
     
     func startTask(method: HTTPMethod,
                    urlPath: String,
@@ -142,11 +156,9 @@ extension Network {
         }
         
         guard let url = URL(string: baseURL + urlPath) else {
-            BKLog.error("Invalid URL with path \(urlPath)")
             errorHandler(.invalidURL)
             return nil
         }
-        BKLog.info("Calling URL \(url)")
         
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
@@ -162,7 +174,7 @@ extension Network {
             return task
         } catch {
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            BKLog.error("Failed To Encode Request for path \(urlPath)")
+            BKLog.error("Failed To Encode Request")
             errorHandler(.failedToEncode)
         }
         
@@ -178,7 +190,7 @@ extension Network {
             guard let `self` = self else { return }
             
             guard let response = urlResponse as? HTTPURLResponse else {
-                BKLog.error("Failed to Encode URL Response \(String(describing: urlResponse))")
+                BKLog.error("Failed to Encode URL Response")
                 errorHandler(.failedToEncode)
                 return
             }
@@ -191,7 +203,7 @@ extension Network {
                     BKLog.info("Request was cancelled")
                     errorHandler(.requestCancelled)
                 } else {
-                    BKLog.error("Failed with status \(response.statusCode): \(error.localizedDescription)")
+                    BKLog.error("Failed with status \(response.statusCode)")
                     errorHandler(.failWithStatus(response.statusCode, error.localizedDescription, nil))
                 }
                 return
@@ -208,11 +220,10 @@ extension Network {
                     responseData = ["data": data]
                 }
                 let blah = responseData as? JSON
-                BKLog.info("JSON Response: \(String(describing: responseData))")
                 if self.isSuccessCode(response.statusCode) {
                     successHandler(blah)
                 } else {
-                    BKLog.error("Failed with status \(response.statusCode): \(String(describing: response.url))")
+                    BKLog.error("Failed with status \(response.statusCode)")
                     errorHandler(.failWithStatus(response.statusCode, nil, blah))
                 }
                 return
@@ -221,7 +232,6 @@ extension Network {
                 if self.isSuccessCode(response.statusCode) {
                     successHandler(nil)
                 } else {
-                    BKLog.error("i'll never love again")
                     errorHandler(.failedToEncode)
                 }
                 return

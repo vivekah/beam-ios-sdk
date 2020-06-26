@@ -15,14 +15,18 @@ internal enum BackgroundTintType {
 
 internal class GradientProgressBar: UIView {
     var tintType: BackgroundTintType
-    var numerator: Float = 0
-    var denominator: Float = 0
+    var numerator: CGFloat = 0
+    var denominator: CGFloat = 0
     
     var rounded: Bool = true {
         didSet {
             setNeedsLayout()
             layoutIfNeeded()
         }
+    }
+    
+    var progressColorExists: Bool {
+        return UIColor.progressColor != nil
     }
     
     private let gradientView: UIView = .init(with: .purple)
@@ -74,9 +78,14 @@ internal class GradientProgressBar: UIView {
         percentFillView.clipsToBounds = true
         addSubview(gradientView)
         gradientView.addSubview(percentFillView)
-        gradientView.layer.addSublayer(rainbowGradient)
-        
+        if progressColorExists {
+            percentFillView.backgroundColor = UIColor.progressColor
+            gradientView.backgroundColor = UIColor.progressColor
+        } else {
+            gradientView.layer.addSublayer(rainbowGradient)
+        }
         gradientView.mask = percentFillView
+
     }
     
     var useBlur: Bool {
@@ -84,5 +93,58 @@ internal class GradientProgressBar: UIView {
             return true
         }
         return false
+    }
+}
+
+extension UIDevice {
+    var iPhoneX: Bool {
+        return UIScreen.main.nativeBounds.height == 2436
+    }
+    
+    var iPhone: Bool {
+        return UIDevice.current.userInterfaceIdiom == .phone
+    }
+    
+    var is5or4Phone: Bool {
+        return screenType == .iPhones_4_4S || screenType == .iPhones_5_5s_5c_SE
+    }
+    
+    var is6OrSmaller: Bool {
+        return self.is5or4Phone || screenType == .iPhones_6_6s_7_8
+    }
+
+    var isPlus: Bool {
+        return screenType == .iPhones_6Plus_6sPlus_7Plus_8Plus
+    }
+    
+    enum ScreenType: String {
+        case iPhones_4_4S = "iPhone 4 or iPhone 4S"
+        case iPhones_5_5s_5c_SE = "iPhone 5, iPhone 5s, iPhone 5c or iPhone SE"
+        case iPhones_6_6s_7_8 = "iPhone 6, iPhone 6S, iPhone 7 or iPhone 8"
+        case iPhones_6Plus_6sPlus_7Plus_8Plus = "iPhone 6 Plus, iPhone 6S Plus, iPhone 7 Plus or iPhone 8 Plus"
+        case iPhones_X_XS = "iPhone X or iPhone XS"
+        case iPhone_XR = "iPhone XR"
+        case iPhone_XSMax = "iPhone XS Max"
+        case unknown
+    }
+    var screenType: ScreenType {
+        switch UIScreen.main.nativeBounds.height {
+        case 960:
+            return .iPhones_4_4S
+        case 1136:
+            return .iPhones_5_5s_5c_SE
+        case 1334:
+            return .iPhones_6_6s_7_8
+        case 1792:
+            return .iPhone_XR
+        case 1920, 2208:
+            return .iPhones_6Plus_6sPlus_7Plus_8Plus
+        case 2436:
+            return .iPhones_X_XS
+        case 2688:
+            return .iPhone_XSMax
+        default:
+            return .unknown
+        }
     }
 }

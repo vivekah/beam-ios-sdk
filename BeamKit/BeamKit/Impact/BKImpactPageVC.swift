@@ -63,7 +63,6 @@ extension BKImpactPageVC: UIPageViewControllerDelegate {
             let _ = pageViewController.viewControllers?.first as? BKImpactVC {
             impactDelegate?.didSwipeToImpact()
         }
-        //TODO  update flow with current VC & multiple swipe vcs
     }
 }
 

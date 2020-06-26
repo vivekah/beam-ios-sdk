@@ -9,7 +9,7 @@
 import UIKit
 
 class GradientTextView: UIView {
-    
+    let _colors: [CGColor]
     let gradient: CAGradientLayer = .init()
     var textAlignment: NSTextAlignment = .center {
         didSet {
@@ -35,7 +35,7 @@ class GradientTextView: UIView {
         let label = UILabel(frame: .zero)
         label.textAlignment = .center
         label.numberOfLines = 0
-        label.textColor = .white
+        label.textColor = .beamGray3
         label.backgroundColor = .clear
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.8
@@ -46,6 +46,7 @@ class GradientTextView: UIView {
     init(with colors: [CGColor],
          text: String,
          font: UIFont?) {
+        _colors = colors
         super.init(frame: .zero)
         label.text = text
         gradient.colors = colors
@@ -75,5 +76,14 @@ class GradientTextView: UIView {
         label.sizeToFit()
         label.layoutIfNeeded()
         return label.intrinsicContentSize
+    }
+    
+    func toggleActive(on: Bool) {
+        if on {
+            gradient.colors = _colors
+        } else {
+            gradient.colors = [UIColor.beamGray3.cgColor,
+                               UIColor.beamGray2.cgColor]
+        }
     }
 }

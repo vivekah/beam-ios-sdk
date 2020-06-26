@@ -81,6 +81,10 @@ class BKGradientButton: UIButton {
         }
     }
     
+    func set(color: UIColor) {
+        gradient.colors = [color.cgColor]
+    }
+    
     func addTint() {
         guard !subviews.contains(tintView) else { return }
         addSubview(tintView)
@@ -97,4 +101,85 @@ class BKGradientButton: UIButton {
         tintView.frame = bounds
         tintView.layer.cornerRadius = bounds.height / 2
     }
+}
+
+
+class BKNavBarView: UIView {
+    let backButton: BKBackButton = .init(frame: .zero)
+
+    let beamLogoImageView: UIImageView = {
+        let view = UIImageView(frame: .zero)
+        view.backgroundColor = .clear
+        view.contentMode = .scaleAspectFit
+        view.clipsToBounds = true
+        let bundle = BeamKitContext.shared.bundle
+        let image = UIImage(named: "bkLogo", in: bundle, compatibleWith: nil)
+        view.image = image
+        return view
+    }()
+    
+    let chainLogoImageView: UIImageView = {
+        let view = UIImageView(frame: .zero)
+        view.backgroundColor = .clear
+        view.contentMode = .scaleAspectFit
+        view.clipsToBounds = true
+        return view
+    }()
+    
+    let plusLabel: GradientTextView = .init(with: [UIColor.beamGradientLightYellow.cgColor,
+                                                   UIColor.beamGradientLightOrange.cgColor],
+                                            text: "+",
+                                            font: UIFont.beamBold(size: 15))
+
+    let separatorBar: UIView = UIView(with: UIColor.accent)
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setup() {
+        addSubview(backButton.usingConstraints())
+        addSubview(beamLogoImageView.usingConstraints())
+        addSubview(chainLogoImageView.usingConstraints())
+        addSubview(plusLabel.usingConstraints())
+        addSubview(separatorBar.usingConstraints())
+        setupConstraints()
+    }
+    
+    func setupConstraints() {
+        let insets = UIEdgeInsets.zero
+        let views: Views = ["back": backButton,
+                            "beam": beamLogoImageView,
+                            "chain": chainLogoImageView,
+                            "sep": separatorBar,
+                            "plus": plusLabel]
+        
+        let metrics: [String: Any] = ["navHeight": UIView.beamDefaultNavBarHeight,
+                                      "top": insets.top]
+        
+        let formats: [String] = ["H:|-30-[back(25)]",
+                                 "H:|[sep]|",
+                                 "H:[beam(60)]-[plus]-[chain(70)]->=10-|",
+                                 "V:|-5-[chain]-2-[sep(2)]|",
+                                 "V:|-5-[beam]-2-[sep]"]
+        
+        var constraints: Constraints = NSLayoutConstraint.center(plusLabel, in: self)
+        
+        constraints += NSLayoutConstraint.constraints(withFormats: formats,
+                                                      options: [],
+                                                      metrics: metrics,
+                                                      views: views)
+        constraints += [NSLayoutConstraint.centerOnY(backButton, in: self),
+                        NSLayoutConstraint.constrainHeight(self, by: 65)]
+        
+        NSLayoutConstraint.activate(constraints)
+        setNeedsLayout()
+        layoutIfNeeded()
+    }
+
 }

@@ -27,7 +27,6 @@ class TitleImageView: UIView {
         view.backgroundColor = .clear
         view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
-        view.image = #imageLiteral(resourceName: "DosTOros")
         return view
     }()
     

@@ -12,9 +12,7 @@ class BKFullImpactVC: UIViewController {
     weak var flow: BKImpactFlow?
     weak var context: BKImpactContext?
     
-    // TODO BACK BUTTON
-    // TODO icon/ nav bar
-    let navBar: UIView = .init(frame: .zero)
+    let navBar: BKNavBarView = .init(frame: .zero)
     
     let tabBar: BKImpactSlideView = .init(frame: .zero)
     let carousel: BKImpactPageVC = .init(transitionStyle: .scroll,
@@ -35,11 +33,22 @@ class BKFullImpactVC: UIViewController {
         super.viewDidLoad()
         setup()
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navBar.setNeedsLayout()
+        navBar.layoutIfNeeded()
+        if let logo = context?.impact?.logo,
+            let url = URL(string: logo) {
+        navBar.chainLogoImageView.bkSetImageWithUrl(url)
+        }
+    }
+        
     func setup() {
+        view.isUserInteractionEnabled = true
         view.backgroundColor = .white
         view.addSubview(navBar.usingConstraints())
         view.addSubview(tabBar.usingConstraints())
+        navBar.backButton.addTarget(self, action: #selector(navigateBack), for: .touchUpInside)
         addChild(carousel)
         view.addSubview(carousel.view.usingConstraints())
         carousel.didMove(toParent: self)
@@ -55,18 +64,35 @@ class BKFullImpactVC: UIViewController {
                             "page": carousel.view]
         
         let metrics: [String: Any] = ["topInset": 8,
-                                      "headerHeight": UIView.beamDefaultNavBarHeight]
+                                      "headerHeight": UIView.beamDefaultNavBarHeight + 20]
         
-        let formats: [String] = ["V:|-topInset-[title(headerHeight)]-8-[tab][page]|",
+        let formats: [String] = ["V:|-topInset-[title(headerHeight)]-8-[tab]-[page]|",
                                  "H:|[title]|",
-                                 "H:|[tab]|",
-                                 "H:|[page]|"]
-        let constraints: Constraints =
+                                 "H:|-20-[tab]",
+                                 "H:|[page]|",
+                                 "H:|[title]|"
+
+        ]
+        var constraints: Constraints =
         NSLayoutConstraint.constraints(withFormats: formats,
                                        options: [],
                                        metrics: metrics,
                                        views: views)
+        constraints += [NSLayoutConstraint.constrainWidth(tabBar, by: tabBar.intrinsicContentSize.width)]
         NSLayoutConstraint.activate(constraints)
+    }
+}
+
+extension BKFullImpactVC {
+    @objc
+    func navigateBack() {
+        flow?.didDismissFullImpact()
+        dismiss(animated: true, completion: nil)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        flow?.didDismissFullImpact()
     }
 }
 
