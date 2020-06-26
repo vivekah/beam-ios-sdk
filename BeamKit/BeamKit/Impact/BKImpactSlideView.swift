@@ -17,8 +17,8 @@ class BKImpactSlideView: UIView {
     
     weak var delegate: BKImpactSlideViewDelegate? = nil
     
-    let myImpactLabel: BKSelectionLabel = .init(title: "My Impact")
-    let globalLabel: BKSelectionLabel = .init(title: "Community Impact" )
+    let myImpactLabel: BKSelectionLabel = .init(title: "MY IMPACT")
+    let globalLabel: BKSelectionLabel = .init(title: "COMMUNITY IMPACT" )
     
     lazy var slideIndicator: UIView = .init(with: myImpactLabel.selectedColor)
     lazy var impactCenter: NSLayoutConstraint =

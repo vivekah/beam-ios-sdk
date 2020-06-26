@@ -83,7 +83,7 @@ public class BKImpactView: UIView {
         return label
     }()
     
-    let nameLabel: UILabel = {
+    lazy var nameLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = .beamBold(size: 24)
         label.textAlignment = .left
@@ -161,6 +161,10 @@ public class BKImpactView: UIView {
         button.clipsToBounds = true
         return button
     }()
+    
+    var lunchBoxTitle: String {
+        return UIDevice.current.is6OrSmaller ? "LEARN MORE" : "LEARN MORE ABOUT OUR NONPROFITS"
+    }
     
     var impactConstraints: [NSLayoutConstraint] = .init()
     var emptyConstraints: [NSLayoutConstraint] = .init()
@@ -251,7 +255,7 @@ public class BKImpactView: UIView {
                                  "H:|[learn]|",
                                  "V:|[back][learn(30)]|",
                                  "H:|-30-[cause]->=10-|",
-                                 "V:|-8-[cause]->=5-[name]-10-[bar(8)]-10-|",
+                                 "V:|-8-[cause]->=3-[name]-10-[bar(8)]-10-|",
                                  "V:[cause]-1-[pb]"]
         impactConstraints +=
              NSLayoutConstraint.constraints(withFormats: formats, views: views)
@@ -374,7 +378,7 @@ public class BKImpactView: UIView {
         }
         if case .wordsBelowImage = type {
             nameLabel.text = emptyStateTitle
-            seeMoreButton.setTitle("LEARN MORE ABOUT OUR NONPROFITS", for: .normal)
+            seeMoreButton.setTitle(lunchBoxTitle, for: .normal)
         }
         hideandseek(isEmpty: true)
     }
@@ -384,7 +388,7 @@ public class BKImpactView: UIView {
         if case .wordsBelowImage = type {
             backgroundImage.isHidden = isEmpty
             descriptionLabel.isHidden = !isEmpty
-            seeMoreButton.setTitle("LEARN MORE ABOUT OUR NONPROFITS", for: .normal)
+            seeMoreButton.setTitle(lunchBoxTitle, for: .normal)
         } else {
             changeButton.isHidden = !isEmpty
             nameLabel.isHidden = isEmpty

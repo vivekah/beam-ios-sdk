@@ -36,7 +36,7 @@ internal class NonprofitView: UIButton {
     
     let nameLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.font = UIFont.beamBold(size: 24)
+        label.font = UIDevice.current.is5or4Phone ? UIFont.beamBold(size: 20) : UIFont.beamBold(size: 24)
         label.textAlignment = .left
         label.numberOfLines = 1
         label.backgroundColor = .clear
@@ -84,11 +84,13 @@ internal class NonprofitView: UIButton {
     
     let causeLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.font = UIFont.beamRegular(size: 12.0)
+        label.font = UIDevice.current.is5or4Phone ? UIFont.beamRegular(size: 11.0) : UIFont.beamRegular(size: 12.0)
         label.textAlignment = .left
         label.numberOfLines = 1
         label.textColor = .white
         label.backgroundColor = .clear
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.8
         return label
     }()
     

@@ -26,8 +26,8 @@ public class BKManager: NSObject {
         return BeamKitContext.shared.registerUser(id: id, info: info, completion)
     }
     
-    public func registerCustomBackButton(image: UIImage) {
-        BKBackButton.register(backImage: image)
+    public func registerCustomBackButton(image: UIImage, tint: UIColor) {
+        BKBackButton.register(backImage: image, tint: tint)
     }
 }
 

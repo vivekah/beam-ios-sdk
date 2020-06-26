@@ -190,7 +190,7 @@ class BKVisitHeaderView: UIView {
         label.backgroundColor = .clear
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.6
-        label.textColor = .beamGray3
+        label.textColor = .beamOrange4
         return label
     }()
     
@@ -241,7 +241,7 @@ class BKVisitHeaderView: UIView {
         }
         
         let attributes: [NSAttributedString.Key : Any] = [.font: UIFont.beamBold(size: 12) as Any,
-                                                          .foregroundColor: UIColor.beamGray3]
+                                                          .foregroundColor: UIColor.beamOrange4]
         
         let attributedString = NSAttributedString(string: donationString,
                                                   attributes: attributes)
@@ -267,19 +267,33 @@ class BKVisitHeaderView: UIView {
     }()
     
     lazy var customDescriptionString: NSAttributedString = {
-        let beginText = "Thanks for your order! We will donate "
-        let endText = " to a nonprofit every time you order with us! Just let us know which organization you'd like to support. Don't worry, you can change this with any order."
+        let beginText = "Thanks for your order!\n\n"
+        let middleText = "We will donate "
+        let endText = " to a nonprofit every time you order with us! Don't worry, you can change this with any order.\n\n"
+        let grayText = "Just tap below to select your nonprofit, or tap on the arrow to learn more."
         let attributes: [NSAttributedString.Key : Any] = [.font: UIFont.beamRegular(size: 12) as Any,
-                                                          .foregroundColor: UIColor.beamGray3]
+                                                          .foregroundColor: UIColor.beamOrange4]
         
-        let desc = NSMutableAttributedString(string: beginText,
+        let boldAttributes: [NSAttributedString.Key : Any] = [.font: UIFont.beamBold(size: 12) as Any,
+                                                          .foregroundColor: UIColor.beamOrange4]
+        
+        let grayAttributes: [NSAttributedString.Key : Any] = [.font: UIFont.beamRegular(size: 12) as Any,
+                                                          .foregroundColor: UIColor.beamOrange4]
+        let attrBegin = NSMutableAttributedString(string: beginText,
+                                                  attributes: boldAttributes)
+        
+        let desc = NSMutableAttributedString(string: middleText,
                                              attributes: attributes)
         
         let attributedEnd = NSAttributedString(string: endText,
                                                attributes: attributes)
-        desc.append(donationString)
-        desc.append(attributedEnd)
-        return desc
+        let grayAtr = NSAttributedString(string: grayText,
+                                         attributes: grayAttributes)
+        attrBegin.append(desc)
+        attrBegin.append(donationString)
+        attrBegin.append(attributedEnd)
+        attrBegin.append(grayAtr)
+        return attrBegin
     }()
     
     func setupConstraints() {
@@ -293,7 +307,7 @@ class BKVisitHeaderView: UIView {
                             "nav": navBarView]
         
         let metrics: [String: Any] = ["navHeight": UIView.beamDefaultNavBarHeight,
-                                      "descHeight": UIView.beamDefaultNavBarHeight + 20,
+                                      "descHeight": UIView.beamDefaultNavBarHeight + 50,
                                       "top": insets.top]
         
         let formats: [String] = ["H:|-30-[back(25)]",

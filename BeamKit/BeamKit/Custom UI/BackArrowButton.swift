@@ -48,17 +48,19 @@ class BKBackButton: UIButton {
         imageView?.contentMode = .scaleAspectFit
         imageView?.clipsToBounds = true
         contentEdgeInsets = UIEdgeInsets(top: 10, left: 8, bottom: 5, right: 8)
-        tint(.beamGray3)
+        tint(BKBackButton._tint)
     }
     
     static var _backImage: UIImage? = BKBackButton.arrowImage
-    
+    static var _tint: UIColor = .beamGray3
+
     internal class var backImage: UIImage? {
         return _backImage
     }
     
-    public class func register(backImage: UIImage) {
+    public class func register(backImage: UIImage, tint: UIColor) {
         _backImage = backImage
+        _tint = tint
     }
 }
 

@@ -19,7 +19,7 @@ class BKImpactCell: UITableViewCell {
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.8
         label.textColor = .white
-        label.font = .beamBold(size: 12)
+        label.font = .beamRegular(size: 12)
         return label
     }()
     //percentage label
@@ -111,7 +111,7 @@ class BKImpactCell: UITableViewCell {
         descriptionLabel.text = "of the way to funding \(desc)"
         titleImageView.title = impact.name
         setupProgress(with: impact)
-        causeLabel.text = impact.cause
+        causeLabel.text = impact.cause?.uppercased()
         let image = impact.image
         if !image.isEmpty,
             let url = URL(string: image) {
