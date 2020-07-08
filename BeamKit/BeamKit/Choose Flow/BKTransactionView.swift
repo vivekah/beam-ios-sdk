@@ -149,7 +149,6 @@ public class BKTransactionView: UIView {
                         NSLayoutConstraint.constrainHeight(changeButton, by: changeButton.intrinsicContentSize.height + 16),
                         NSLayoutConstraint.constrainWidth(changeButton, by: changeButton.intrinsicContentSize.width + 24)]
         NSLayoutConstraint.activate(constraints)
-        layoutIfNeeded()
     }
     
     func setupLeftConstraionts() {
@@ -172,7 +171,7 @@ public class BKTransactionView: UIView {
                        "H:|[back]-7-[label]-7-|",
                        "H:[back]-[sep]-|",
                        "H:[back]-[button]-|",
-                       "V:|-5-[label]-[sep(1)][button]|"]
+                       "V:|-5-[label]-[sep(1)][button(<=40)]|"]
         formats += canMatch ? ["V:|[content]-5-[match(80)]|","H:|[match]|"] : ["V:|[content]|"]
         var constraints: Constraints = NSLayoutConstraint.constraints(withFormats: formats, views: views)
         
@@ -182,11 +181,9 @@ public class BKTransactionView: UIView {
                                            toItem: contentView,
                                            attribute: .height,
                                            multiplier: 1.0,
-                                           constant: 0),
-            NSLayoutConstraint.constrainHeight(changeButton, by: changeButton.intrinsicContentSize.height + 10),
-                        NSLayoutConstraint.constrainWidth(changeButton, by: changeButton.intrinsicContentSize.width + 5)]
+                                           constant: 0)
+        ]
         NSLayoutConstraint.activate(constraints)
-        layoutIfNeeded()
     }
     
     public override var intrinsicContentSize: CGSize {
