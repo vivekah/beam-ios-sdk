@@ -86,7 +86,8 @@ public class BKTransactionView: UIView {
     public init?(type: BKBackgroundType) {
         guard let _ = BeamKitContext.shared.chooseFlow.context.currentTransaction else { return nil }
         self.backgroundView = BKBackgroundView(with: type)
-        super.init(frame: .zero)
+        let rect = CGRect(x: 0, y: 0, width: 300, height: 135)
+        super.init(frame: rect)
 
         setup()
         listen()
