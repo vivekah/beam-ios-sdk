@@ -60,6 +60,12 @@ public class BKImpactView: UIView {
         }
     }
     
+    public var buttonCornerRadius: CGFloat = 2.0 {
+        didSet {
+            seeMoreButton.layer.cornerRadius = buttonCornerRadius
+        }
+    }
+    
     public var emptyStateTitle: String = "Make an Impact With Us"
 
     let backgroundImage: UIImageView = {
@@ -280,7 +286,7 @@ public class BKImpactView: UIView {
         addSubview(descriptionLabel.usingConstraints())
         addSubview(progressBar.usingConstraints())
         addSubview(seeMoreButton.usingConstraints())
-        seeMoreButton.layer.cornerRadius = 2
+        seeMoreButton.layer.cornerRadius = buttonCornerRadius
         seeMoreButton.setTitle("SEE MORE OF YOUR IMPACT", for: .normal)
         finishSetup()
         seeMoreButton.addTarget(self, action: #selector(seeEither), for: .touchUpInside)

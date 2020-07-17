@@ -34,6 +34,7 @@ public class BKTransactionView: UIView {
             match.layer.cornerRadius = cornerRadius
         }
     }
+    
     public var borderColor: UIColor = .white {
         didSet {
             contentView.layer.borderColor = borderColor.cgColor
@@ -42,6 +43,19 @@ public class BKTransactionView: UIView {
     public var borderWidth: CGFloat = 0.0 {
         didSet {
             contentView.layer.borderWidth = borderWidth
+        }
+    }
+    
+    public var titleFont: UIFont? = .beamBold(size: 13) {
+        didSet {
+            labelView.font = titleFont
+        }
+    }
+    
+    
+    public var buttonFont: UIFont? = .beamBold(size: 15.0) {
+        didSet {
+            changeButton.titleLabel?.font = buttonFont
         }
     }
     
@@ -193,7 +207,11 @@ public class BKTransactionView: UIView {
             height += 5
             height += match.intrinsicContentSize.height
         }
-        return CGSize(width: superview?.bounds.width ?? 0, height: height)
+        var width: CGFloat = 0
+        if let sup = superview {
+            width = sup.bounds.width - 20
+        }
+        return CGSize(width: width, height: height)
     }
     
     func update(with transaction: BKTransaction?) {

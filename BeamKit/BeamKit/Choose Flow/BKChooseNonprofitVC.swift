@@ -81,14 +81,21 @@ public class BKChooseNonprofitVC: UIViewController {
                                  "H:|[second]|",
                                  "H:|[third]|",
                                  "H:|[fourth]|"]
+        var insets: CGFloat = 0
+        
+        if #available(iOS 11.0, *) {
+            insets = view.safeAreaInsets.top + 8
+        }
+        let metrics = ["top": insets]
         
         if showFourth {
-            formats.append("V:|[header][first]-2-[second]-2-[third]-2-[fourth]|")
+            formats.append("V:|-top-[header][first]-2-[second]-2-[third]-2-[fourth]|")
         } else {
-            formats.append("V:|[header][first]-2-[second]-2-[third]|")
+            formats.append("V:|-top-[header][first]-2-[second]-2-[third]|")
         }
         
         var constraints: Constraints = NSLayoutConstraint.constraints(withFormats: formats,
+                                                                      metrics: metrics,
                                                                       views: views)
         
         constraints += [NSLayoutConstraint(item: first,
