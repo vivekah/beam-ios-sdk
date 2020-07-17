@@ -63,7 +63,13 @@ class BKFullImpactVC: UIViewController {
                             "tab": tabBar,
                             "page": carousel.view]
         
-        let metrics: [String: Any] = ["topInset": 8,
+        var insets: CGFloat = 8.0
+    
+        if #available(iOS 11.0, *) {
+            insets = view.safeAreaInsets.top + 10
+        }
+        
+        let metrics: [String: Any] = ["topInset": insets,
                                       "headerHeight": UIView.beamDefaultNavBarHeight + 20]
         
         let formats: [String] = ["V:|-topInset-[title(headerHeight)]-8-[tab]-[page]|",
