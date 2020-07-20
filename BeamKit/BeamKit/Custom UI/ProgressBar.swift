@@ -117,6 +117,11 @@ extension UIDevice {
         return screenType == .iPhones_6Plus_6sPlus_7Plus_8Plus
     }
     
+    var hasNotch: Bool {
+        return UIScreen.main.nativeBounds.height >= 2435
+       // return screenType == .iPhone_XR || screenType == .iPhones_X_XS || screenType == .iPhone_XSMax
+    }
+    
     enum ScreenType: String {
         case iPhones_4_4S = "iPhone 4 or iPhone 4S"
         case iPhones_5_5s_5c_SE = "iPhone 5, iPhone 5s, iPhone 5c or iPhone SE"
