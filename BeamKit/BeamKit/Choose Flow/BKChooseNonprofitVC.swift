@@ -20,7 +20,7 @@ public class BKChooseNonprofitVC: UIViewController {
     }
 
     let header: BKVisitHeaderView
-    weak var delegate: BKChooseNonprofitViewDelegate?
+    public weak var delegate: BKChooseNonprofitViewDelegate?
 
     let first: NonprofitView = .init(frame: .zero)
     let second: NonprofitView = .init(frame: .zero)
