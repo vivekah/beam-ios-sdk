@@ -31,17 +31,18 @@ class BKChooseNonprofitFlow {
         presentingVC.present(vc, animated: true)
     }
     
-    func navigateBack(from vc: UIViewController) {
-        vc.dismiss(animated: true)
+    func navigateBack(from vc: UIViewController, completion: (() -> Void)? = nil) {
+        vc.dismiss(animated: true, completion: completion)
     }
     
     func redeem(_ transaction: BKTransaction,
                 nonprofit: BKNonprofit,
-                from vc: UIViewController) {
+                from vc: UIViewController,
+                completion: (() -> Void)? = nil) {
         transaction.chosenNonprofit = nonprofit
         context.currentTransaction = transaction
         DispatchQueue.main.async {
-            self.navigateBack(from: vc)
+            self.navigateBack(from: vc, completion: completion)
         }
     }
     
