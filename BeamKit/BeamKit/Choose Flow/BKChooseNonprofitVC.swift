@@ -8,6 +8,10 @@
 
 import UIKit
 
+public protocol BKChooseNonprofitViewDelegate: class {
+    func didDismiss()
+}
+
 public class BKChooseNonprofitVC: UIViewController {
 
     let transaction: BKTransaction
@@ -16,6 +20,7 @@ public class BKChooseNonprofitVC: UIViewController {
     }
 
     let header: BKVisitHeaderView
+    weak var delegate: BKChooseNonprofitViewDelegate?
 
     let first: NonprofitView = .init(frame: .zero)
     let second: NonprofitView = .init(frame: .zero)
@@ -155,7 +160,11 @@ extension BKChooseNonprofitVC: NonprofitViewDelegate {
         // turn off user interaction so doesn't call api twice
         view.isUserInteractionEnabled = false
         
-        flow.redeem(transaction, nonprofit: nonprofit, from: self)
+        flow.redeem(transaction,
+                    nonprofit: nonprofit,
+                    from: self) {
+                        self.delegate?.didDismiss()
+        }
     }
 }
 
