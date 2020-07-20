@@ -91,6 +91,9 @@ public class BKChooseNonprofitVC: UIViewController {
         if #available(iOS 11.0, *) {
             insets = view.safeAreaInsets.top + 8
         }
+        if UIDevice.current.hasNotch && modalPresentationStyle == .fullScreen {
+            insets += 40
+        }
         let metrics = ["top": insets]
         
         if showFourth {
