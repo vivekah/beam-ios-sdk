@@ -89,10 +89,7 @@ public class BKChooseNonprofitVC: UIViewController {
         var insets: CGFloat = 0
         
         if #available(iOS 11.0, *) {
-            insets = view.safeAreaInsets.top + 8
-        }
-        if UIDevice.current.hasNotch && modalPresentationStyle == .fullScreen {
-            insets += 40
+            insets = UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 8
         }
         let metrics = ["top": insets]
         
