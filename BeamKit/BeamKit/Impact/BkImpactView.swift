@@ -202,6 +202,8 @@ public class BKImpactView: UIView {
         } else {
             setupWordsBelow()
         }
+        
+        listen()
     }
     
     func finishSetup() {
@@ -414,6 +416,13 @@ public class BKImpactView: UIView {
         }
         return CGSize(width: superview?.bounds.width ?? 0, height: height)
     }
+    
+    func listen() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(donationsUpdate),
+                                               name: ._bkdidCompleteTransaction,
+                                               object: nil)
+    }
 }
 
 extension BKImpactView {
@@ -439,5 +448,10 @@ extension BKImpactView {
         } else {
             flow.showJustCommunityImpact(from: delegate.baseViewController)
         }
+    }
+    
+    @objc
+    func donationsUpdate() {
+        loadImpact(forceReload: true)
     }
 }
