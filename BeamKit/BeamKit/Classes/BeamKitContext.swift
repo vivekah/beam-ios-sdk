@@ -13,6 +13,11 @@ public enum BKEnvironment {
     case staging
 }
 
+extension Notification.Name {
+    static let _userRegistrationEvent = Notification.Name("bk_user_registration_event")
+}
+
+
 class BeamKitContext {
     static let shared = BeamKitContext()
     
@@ -52,6 +57,14 @@ class BeamKitContext {
         }
     }
     
+    func deregisterUser(_ completion: ((BeamError) -> Void)? = nil) {
+        userID = nil
+        NotificationCenter.default.post(name: ._userRegistrationEvent,
+                                        object: self,
+                                        userInfo: nil)
+        completion?(.none)
+    }
+
     //Returns Transaction ID
     func complete(_ transaction: BKTransaction,
                   _ completion: ((Int?, BeamError) -> Void)? = nil) {

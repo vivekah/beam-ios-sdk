@@ -64,4 +64,9 @@ class BKImpactContext {
     func getImpact(for nonprofit: BKNonprofit, _ completion: ((BKNonprofit?, BeamError) -> Void)? = nil) {
         api.getImpact(for: nonprofit, completion)
     }
+    
+    func clearImpact() {
+        impact = nil
+        communityImpact = nil
+    }
 }
