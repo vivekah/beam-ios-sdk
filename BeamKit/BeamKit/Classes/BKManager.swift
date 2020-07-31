@@ -29,6 +29,10 @@ public class BKManager: NSObject {
     public func registerCustomBackButton(image: UIImage, tint: UIColor) {
         BKBackButton.register(backImage: image, tint: tint)
     }
+    
+    public func deregisterUser(_ completion: ((BeamError) -> Void)? = nil) {
+        BeamKitContext.shared.deregisterUser()
+    }
 }
 
 extension BKManager {
@@ -55,6 +59,7 @@ extension BKManager {
                                   _ completion: ((BeamError) -> Void)? = nil) {
         BeamKitContext.shared.chooseContext.cancelTransaction(id: id, completion)
     }
+    
 }
 
 extension BKManager {

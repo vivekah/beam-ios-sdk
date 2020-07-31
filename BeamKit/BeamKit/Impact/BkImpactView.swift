@@ -66,7 +66,7 @@ public class BKImpactView: UIView {
         }
     }
     
-    public var emptyStateTitle: String = "Make an Impact With Us"
+    public var emptyStateTitle: String = "MAKE AN IMPACT WITH US"
 
     let backgroundImage: UIImageView = {
         let view = UIImageView(frame: .zero)
@@ -389,6 +389,8 @@ public class BKImpactView: UIView {
             seeMoreButton.setTitle(lunchBoxTitle, for: .normal)
         }
         hideandseek(isEmpty: true)
+        setNeedsLayout()
+        layoutIfNeeded()
     }
         
     func hideandseek(isEmpty: Bool) {
@@ -397,6 +399,7 @@ public class BKImpactView: UIView {
             backgroundImage.isHidden = isEmpty
             descriptionLabel.isHidden = !isEmpty
             seeMoreButton.setTitle(lunchBoxTitle, for: .normal)
+            nameLabel.numberOfLines = isEmpty ? 1 : 0
         } else {
             changeButton.isHidden = !isEmpty
             nameLabel.isHidden = isEmpty
@@ -421,6 +424,10 @@ public class BKImpactView: UIView {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(donationsUpdate),
                                                name: ._bkdidCompleteTransaction,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(userRegistration),
+                                               name: ._userRegistrationEvent,
                                                object: nil)
     }
 }
@@ -452,6 +459,12 @@ extension BKImpactView {
     
     @objc
     func donationsUpdate() {
+        loadImpact(forceReload: true)
+    }
+    
+    @objc
+    func userRegistration() {
+        flow.context.clearImpact()
         loadImpact(forceReload: true)
     }
 }
