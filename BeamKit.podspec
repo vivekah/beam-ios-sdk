@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "BeamKit"
-  s.version      = "1.1.0"
+  s.version      = "1.2.0"
   s.summary      = "BeamKit allows companies to integrate the Beam experience into their app."
 
   # This description is used to generate tags and improve search results.
@@ -69,9 +69,10 @@ Pod::Spec.new do |s|
   #
 
   s.source       = { :git => "https://github.com/vivekah/beam-ios-sdk.git", :tag => "#{s.version}" }
-#  s.source = { :http => "https://ios-pod.s3-us-west-2.amazonaws.com/BeamKit.zip"}
-#  s.ios.vendored_frameworks = 'BeamKit.framework'
-#  s.ios.deployment_target = '8.0'
+ # s.source = { :http => "https://ios-pod.s3-us-west-2.amazonaws.com/BeamKit.zip"}
+ # s.ios.vendored_frameworks = 'BeamKit.framework'
+  s.ios.deployment_target = '8.0'
+  #s.framework = 'BeamKit.framework'
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
@@ -82,9 +83,9 @@ Pod::Spec.new do |s|
   #
 
   s.source_files  = "BeamKit/BeamKit/**/*.swift"
-  # s.exclude_files = "Classes/Exclude"
+   s.exclude_files = "BeamKit/BeamKit/Classes/Exclude/*"
 
-  # s.public_header_files = "Classes/**/*.h"
+ # s.public_header_files = "Classes/**/*.h"
 
 
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #

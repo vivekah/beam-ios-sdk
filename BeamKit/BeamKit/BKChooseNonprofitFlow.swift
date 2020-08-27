@@ -28,6 +28,7 @@ class BKChooseNonprofitFlow {
         }
         chooseVC = BKChooseNonprofitVC(with: trans)
         guard let vc = chooseVC else { return } // todo add error
+       // vc.modalPresentationStyle = .fullScreen
         presentingVC.present(vc, animated: true)
     }
     
@@ -53,8 +54,6 @@ class BKChooseNonprofitFlow {
             completion?(returnedTrans.id, error)
         }
     }
-    
-
     
     lazy var testTransaction: BKTransaction = {
         let non1 = BKNonprofit(cause: "Sustainability",
