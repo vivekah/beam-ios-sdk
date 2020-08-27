@@ -83,7 +83,7 @@ Pod::Spec.new do |s|
   #
 
   s.source_files  = "BeamKit/BeamKit/**/*.swift"
-  # s.exclude_files = "Classes/Exclude"
+   s.exclude_files = "BeamKit/BeamKit/Classes/Exclude/*"
 
  # s.public_header_files = "Classes/**/*.h"
 

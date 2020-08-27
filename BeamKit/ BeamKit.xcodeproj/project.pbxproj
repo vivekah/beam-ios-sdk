@@ -30,7 +30,7 @@
 		1B812609237E13D40097B009 /* BackArrowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B812607237E13D30097B009 /* BackArrowButton.swift */; };
 		1B81260A237E13D40097B009 /* BKGradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B812608237E13D40097B009 /* BKGradientButton.swift */; };
 		1B81260C237E5DFD0097B009 /* BKImpactContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B81260B237E5DFD0097B009 /* BKImpactContext.swift */; };
-		1B998D1624F58352007F7834 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1B1EAC7322C41E8100BB02EB /* Info.plist */; };
+		1B998D1624F58352007F7834 /* Beam-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1B1EAC7322C41E8100BB02EB /* Beam-Info.plist */; };
 		1B9C1FBC234E31D6008BEC08 /* BKImpactVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B9C1FBB234E31D6008BEC08 /* BKImpactVC.swift */; };
 		1BADFD1822C6915F009DAD34 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BADFD1722C6915F009DAD34 /* ProgressBar.swift */; };
 		1BADFD1A22C6917D009DAD34 /* Color+Beam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BADFD1922C6917D009DAD34 /* Color+Beam.swift */; };
@@ -77,7 +77,7 @@
 		1B0DCC5E23F50F2000814674 /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
 		1B1EAC6F22C41E8100BB02EB /* BeamKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BeamKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B1EAC7222C41E8100BB02EB /* beam_ios_sdk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = beam_ios_sdk.h; sourceTree = "<group>"; };
-		1B1EAC7322C41E8100BB02EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1B1EAC7322C41E8100BB02EB /* Beam-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Beam-Info.plist"; sourceTree = "<group>"; };
 		1B1EAC7A22C41EB100BB02EB /* BKManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BKManager.swift; sourceTree = "<group>"; };
 		1B1EAC7C22C41F4300BB02EB /* NonprofitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonprofitView.swift; sourceTree = "<group>"; };
 		1B1EAC7E22C41FAF00BB02EB /* UIView+Beam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Beam.swift"; sourceTree = "<group>"; };
@@ -182,7 +182,7 @@
 		1B226F2123EC966700180EB4 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				1B1EAC7322C41E8100BB02EB /* Info.plist */,
+				1BEE7B4D24F85DB700522790 /* Exclude */,
 				1B1EAC7A22C41EB100BB02EB /* BKManager.swift */,
 				1B1FC3FE233C13F600A45E87 /* BeamKitContext.swift */,
 				1B05B63A2346850B00C72CA8 /* BeamKitUserAPI.swift */,
@@ -246,6 +246,14 @@
 				1B59B66523E0F60E0012CEDD /* GradientTextView.swift */,
 			);
 			path = "Custom UI";
+			sourceTree = "<group>";
+		};
+		1BEE7B4D24F85DB700522790 /* Exclude */ = {
+			isa = PBXGroup;
+			children = (
+				1B1EAC7322C41E8100BB02EB /* Beam-Info.plist */,
+			);
+			path = Exclude;
 			sourceTree = "<group>";
 		};
 		4803696E5E8DB10C1E87B481 /* Pods */ = {
@@ -343,7 +351,7 @@
 				1B0DCC6123F50F2100814674 /* Poppins-SemiBold.ttf in Resources */,
 				1B0DCC6023F50F2100814674 /* Poppins-Bold.ttf in Resources */,
 				1B0DCC5F23F50F2100814674 /* Poppins-Regular.ttf in Resources */,
-				1B998D1624F58352007F7834 /* Info.plist in Resources */,
+				1B998D1624F58352007F7834 /* Beam-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
