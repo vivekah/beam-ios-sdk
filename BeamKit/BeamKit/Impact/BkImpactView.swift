@@ -357,6 +357,7 @@ public class BKImpactView: UIView {
         nameLabel.text = nonprofit.name
         if case .wordsBelowImage = type {
             nameLabel.text = nonprofit.name.uppercased()
+            seeMoreButton.setTitle("SEE YOUR IMPACT", for: .normal)
         }
         causeLabel.text = nonprofit.cause?.uppercased()
         hideandseek(isEmpty: false)
@@ -398,7 +399,7 @@ public class BKImpactView: UIView {
         if case .wordsBelowImage = type {
             backgroundImage.isHidden = isEmpty
             descriptionLabel.isHidden = !isEmpty
-            seeMoreButton.setTitle(lunchBoxTitle, for: .normal)
+         //   seeMoreButton.setTitle(lunchBoxTitle, for: .normal)
             nameLabel.numberOfLines = isEmpty ? 1 : 0
         } else {
             changeButton.isHidden = !isEmpty
