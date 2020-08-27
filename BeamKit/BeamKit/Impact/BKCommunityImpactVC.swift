@@ -213,7 +213,7 @@ class BKJustCommunityImpactVC: UIViewController {
                                  "H:|[title]|",
                                  "H:|[page]|"
         ]
-        var constraints: Constraints =
+        let constraints: Constraints =
         NSLayoutConstraint.constraints(withFormats: formats,
                                        options: [],
                                        metrics: metrics,
