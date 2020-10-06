@@ -19,10 +19,15 @@ class BKFullImpactVC: UIViewController {
                                          navigationOrientation: .horizontal)
     
     init(context: BKImpactContext,
-         flow: BKImpactFlow) {
+         flow: BKImpactFlow,
+         shownFromWidget: Bool = true) {
         self.context = context
         self.flow = flow
         super.init(nibName: nil, bundle: nil)
+        if !shownFromWidget {
+            context.loadImpact()
+            context.loadCommunityImpact()
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -33,6 +38,7 @@ class BKFullImpactVC: UIViewController {
         super.viewDidLoad()
         setup()
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navBar.setNeedsLayout()
