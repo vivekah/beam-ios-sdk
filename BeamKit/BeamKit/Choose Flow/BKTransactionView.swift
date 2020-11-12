@@ -52,7 +52,6 @@ public class BKTransactionView: UIView {
         }
     }
     
-    
     public var buttonFont: UIFont? = .beamBold(size: 15.0) {
         didSet {
             changeButton.titleLabel?.font = buttonFont
@@ -225,9 +224,9 @@ public class BKTransactionView: UIView {
         backgroundView.set(image:nonprofit.image)
         setupDescription(for: trans, nonprofit: nonprofit)
         if canMatch {
-            match.configure(with: trans.storeNon.store?.name,
+            match.configure(with: trans.storeNon.store,
                             nonprofit: nonprofit.name,
-                            percent: trans.storeNon.store?.percent)
+                            total: trans.amount)
         }
         setNeedsLayout()
         layoutIfNeeded()

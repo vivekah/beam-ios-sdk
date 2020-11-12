@@ -77,6 +77,15 @@ class NonprofitAPI {
                 store.donationName = name
                 store.amount = amount
             }
+            
+            if let matchDonationType = storeJSON["match_donation_type"] as? JSON {
+                let title = matchDonationType["title"] as? String
+                let value = matchDonationType["description"] as? String
+                let percent = matchDonationType["donation_percentage"] as? CGFloat
+                store.matchTitle = title
+                store.matchDescription = value
+                store.matchPercent = percent
+            }
             model.store = store
         }
 

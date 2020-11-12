@@ -54,6 +54,10 @@ internal class BKStore: NSObject {
     var donationName: String?
     let id: String
     
+    var matchTitle: String?
+    var matchDescription: String?
+    var matchPercent: CGFloat?
+    
     init(id: String,
          image: String? = nil,
          rect: String? = nil,

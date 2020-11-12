@@ -50,7 +50,7 @@ class BKMatchTransactionView: UIView {
     let percentageView: GradientTextView = .init(with: [UIColor.beamGradientLightYellow.cgColor,
                                                          UIColor.beamGradientLightOrange.cgColor],
                                                   text: "+1%",
-                                                  font: UIFont.beamBold(size: 30))
+                                                  font: UIFont.beamBold(size: 24))
     
     let button: BKCheckButton = .init(frame: .zero)
     
@@ -80,7 +80,7 @@ class BKMatchTransactionView: UIView {
                                        "button": button]
         let formats: [String] = ["V:|-2-[title]-4-[desc]-2-|",
                                  "V:|->=2-[per]->=2-|",
-        "H:|-10-[desc]-[per]-[button]-10-|",
+        "H:|-10-[desc]-[per]-8-[button(30)]-10-|",
         "H:|-10-[title]",
         "V:|->=2-[button(30)]->=2-|"]
         
@@ -88,20 +88,26 @@ class BKMatchTransactionView: UIView {
             NSLayoutConstraint.constraints(withFormats: formats, views: views)
         constraints += [NSLayoutConstraint.centerOnY(button, in: self),
                         NSLayoutConstraint.centerOnY(percentageView, in: self),
-                        NSLayoutConstraint.constrainWidth(percentageView, by: percentageView.intrinsicContentSize.width + 2)]
+                        NSLayoutConstraint.constrainWidth(percentageView, by: percentageView.intrinsicContentSize.width + 54)]
         NSLayoutConstraint.activate(constraints)
     }
     
-    func configure(with name: String?, nonprofit: String, percent: CGFloat?) {
+    func configure(with store: BKStore?, nonprofit: String, total: CGFloat) {
+        guard let store = store else { return }
         toggleMatch(on: _isMatched)
-        if let name = name {
-            descriptionLabel.text = "I’d like to match \(name)'s donation to \(nonprofit) to get closer to funding my goal"
-        } else {
-            descriptionLabel.text = "I’d like to match the donation to \(nonprofit) to get closer to funding my goal"
+
+        descriptionLabel.text = "I’d like to match the donation to \(nonprofit) to get closer to funding my goal"
+        
+        if let title = store.matchTitle {
+            titleLabel.text = title
         }
-        let percent = percent ?? 0.01
-        let amtInt = Int(percent * 100)
-        let donationString = "+" + String(amtInt) + "%"
+        if let desc = store.matchDescription {
+            descriptionLabel.text = desc
+        }
+        let percent = store.matchPercent ?? 0.01
+        var amtInt: Double = Double(percent * total)
+        amtInt = amtInt.cutOffDecimalsAfter(2)
+        let donationString = "+ $" + String(amtInt)
         percentageView.text = donationString
     }
     
@@ -169,13 +175,21 @@ class BKCheckButton: UIView {
     func setupConstraints() {
         let views: [String: UIView] = ["circle": circleView,
                                        "check": check]
-        let formats: [String] = ["V:|-4-[circle]-4-|",
-                                 "H:|[check]|",
-                                 "V:|[check]|"]
+        let formats: [String] = ["V:|-6-[circle]-6-|",
+//                                 "H:|[check]|",
+//                                 "V:|[check]|"
+        ]
         
         var constraints: [NSLayoutConstraint] =
             NSLayoutConstraint.constraints(withFormats: formats, views: views)
         constraints += [NSLayoutConstraint.square(circleView),
+                        NSLayoutConstraint(item: check,
+                                           attribute: .width,
+                                           relatedBy: .equal,
+                                           toItem: self,
+                                           attribute: .width,
+                                           multiplier: 1.0,
+                                           constant: 0),
                         NSLayoutConstraint.centerOnX(circleView, in: self)]
         
         NSLayoutConstraint.activate(constraints)
@@ -185,4 +199,16 @@ class BKCheckButton: UIView {
         check.isHidden = !on
     }
     
+}
+
+extension Double {
+    /// Rounds the double to decimal places value
+    func roundToPlaces(_ places:Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (self * divisor).rounded() / divisor
+    }
+    func cutOffDecimalsAfter(_ places:Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (self*divisor).rounded(.towardZero) / divisor
+    }
 }
