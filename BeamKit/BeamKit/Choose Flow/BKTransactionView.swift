@@ -38,11 +38,13 @@ public class BKTransactionView: UIView {
     public var borderColor: UIColor = .white {
         didSet {
             contentView.layer.borderColor = borderColor.cgColor
+            match.layer.borderColor = borderColor.cgColor
         }
     }
     public var borderWidth: CGFloat = 0.0 {
         didSet {
             contentView.layer.borderWidth = borderWidth
+            match.layer.borderWidth = borderWidth
         }
     }
     
