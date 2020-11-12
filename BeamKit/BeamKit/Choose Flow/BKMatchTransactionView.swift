@@ -141,7 +141,8 @@ class BKCheckButton: UIView {
     let check: UIImageView = {
         let view = UIImageView(frame: .zero)
         let bundle = BeamKitContext.shared.bundle
-        let image = UIImage(named: "beam-check", in: bundle, compatibleWith: nil)
+        var image = UIImage(named: "beam-check", in: bundle, compatibleWith: nil)
+        image = image?.maskWithColor(color: .beamOrange4)
         view.image = image
         view.isUserInteractionEnabled = true
         view.backgroundColor = .clear
