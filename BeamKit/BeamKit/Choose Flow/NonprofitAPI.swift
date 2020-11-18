@@ -122,6 +122,7 @@ class NonprofitAPI {
                                store: String,
                                cart: CGFloat,
                                match: Bool,
+                               matchAmount: Double,
                                position: Int,
                                _ completion: ((Int?, BeamError) -> Void)? = nil) {
         guard let user = BeamKitContext.shared.userID else {
@@ -134,6 +135,7 @@ class NonprofitAPI {
                            "cart_total": cart,
                            "nonprofit": id,
                            "user_did_match": match,
+                           "user_match_amount": matchAmount,
                            "nonprofit_position": position]
         
         let successHandler: (JSON?) -> Void = {  transactionJSON in

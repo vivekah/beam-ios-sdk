@@ -89,6 +89,7 @@ class BKTransaction: NSObject {
     var id: Int?
     var canMatch: Bool = false
     var userDidMatch: Bool = false
+    var matchAmount: Double = 0
     var isRedeemed: Bool = false {
         didSet {
             guard isRedeemed == true else { return }
@@ -102,6 +103,11 @@ class BKTransaction: NSObject {
         self.storeNon = storeNon
         self.amount = amount
         super.init()
+        if let mtch = storeNon.store?.matchPercent {
+            var amtInt: Double = Double(mtch * amount)
+            amtInt = amtInt.cutOffDecimalsAfter(2)
+            matchAmount = amtInt
+        }
     }
 }
 

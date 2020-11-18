@@ -55,6 +55,7 @@ class BKChooseNonprofitContext: NSObject {
                                      store: store.id,
                                      cart: amt,
                                      match: didMatch,
+                                     matchAmount: transaction.matchAmount,
                                      position: 1)
         { id, error in
             transaction.id = id
