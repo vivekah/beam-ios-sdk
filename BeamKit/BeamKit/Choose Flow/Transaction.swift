@@ -53,6 +53,7 @@ internal class BKStore: NSObject {
     var amount: CGFloat?
     var donationName: String?
     let id: String
+    var donationDescription: String?
     
     var matchTitle: String?
     var matchDescription: String?

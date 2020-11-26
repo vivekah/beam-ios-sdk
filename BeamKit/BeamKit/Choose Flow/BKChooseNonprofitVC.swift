@@ -283,18 +283,22 @@ class BKVisitHeaderView: UIView {
     }()
     
     lazy var customDescriptionString: NSAttributedString = {
-        let beginText = "Thanks for your order!\n\n"
-        let middleText = "We will donate "
-        let endText = " to a nonprofit every time you order with us! Don't worry, you can change this with any order.\n\n"
-        let grayText = "Just tap below to select your nonprofit, or tap on the arrow to learn more."
+        let customParts = transaction.storeNon.store?.donationDescription?.components(separatedBy: "<b>name</b>")
         let attributes: [NSAttributedString.Key : Any] = [.font: UIFont.beamRegular(size: 12) as Any,
                                                           .foregroundColor: UIColor.beamOrange4]
+        if customParts?.count == 1,
+           let text = customParts?.first {
+            return NSAttributedString(string: text, attributes: attributes)
+        }
+        let beginText = "Thanks for your order!\n\n"
+        let middleText = customParts?.first ?? "We will donate "
+        let endText = customParts?[1].replacingOccurrences(of: "\\n", with: "\n")
+ ?? " to a nonprofit every time you order with us! Don't worry, you can change this with any order.\n\n" + "Just tap below to select your nonprofit, or tap on the arrow to learn more."
+
         
         let boldAttributes: [NSAttributedString.Key : Any] = [.font: UIFont.beamBold(size: 12) as Any,
                                                           .foregroundColor: UIColor.beamOrange4]
         
-        let grayAttributes: [NSAttributedString.Key : Any] = [.font: UIFont.beamRegular(size: 12) as Any,
-                                                          .foregroundColor: UIColor.beamOrange4]
         let attrBegin = NSMutableAttributedString(string: beginText,
                                                   attributes: boldAttributes)
         
@@ -303,14 +307,12 @@ class BKVisitHeaderView: UIView {
         
         let attributedEnd = NSAttributedString(string: endText,
                                                attributes: attributes)
-        let grayAtr = NSAttributedString(string: grayText,
-                                         attributes: grayAttributes)
         attrBegin.append(desc)
         attrBegin.append(donationString)
         attrBegin.append(attributedEnd)
-        attrBegin.append(grayAtr)
         return attrBegin
     }()
+
     
     func setupConstraints() {
         let insets = UIEdgeInsets.zero

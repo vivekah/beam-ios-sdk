@@ -107,7 +107,7 @@ class BKMatchTransactionView: UIView {
         let percent = store.matchPercent ?? 0.01
         var amtInt: Double = Double(percent * total)
         amtInt = amtInt.cutOffDecimalsAfter(2)
-        let donationString = "+ $" + String(amtInt)
+        let donationString = amtInt.dollarString
         percentageView.text = donationString
     }
     
@@ -176,7 +176,7 @@ class BKCheckButton: UIView {
     func setupConstraints() {
         let views: [String: UIView] = ["circle": circleView,
                                        "check": check]
-        let formats: [String] = ["V:|-6-[circle]-6-|",
+        let formats: [String] = ["V:|-6-[circle]-8-|",
 //                                 "H:|[check]|",
 //                                 "V:|[check]|"
         ]
@@ -211,5 +211,9 @@ extension Double {
     func cutOffDecimalsAfter(_ places:Int) -> Double {
         let divisor = pow(10.0, Double(places))
         return (self*divisor).rounded(.towardZero) / divisor
+    }
+    
+    var dollarString:String {
+        return String(format: "+$%.2f", self)
     }
 }

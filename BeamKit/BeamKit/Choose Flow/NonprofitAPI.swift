@@ -73,9 +73,11 @@ class NonprofitAPI {
                 let name = donationType["name"] as? String
                 let amount = donationType["donation_amount"] as? CGFloat ?? 0
                 let percent = donationType["donation_percentage"] as? CGFloat ?? 0
+                let description = donationType["description_mobile"] as? String
                 store.percent = percent
                 store.donationName = name
                 store.amount = amount
+                store.donationDescription = description
             }
             
             if let matchDonationType = storeJSON["match_donation_type"] as? JSON {
