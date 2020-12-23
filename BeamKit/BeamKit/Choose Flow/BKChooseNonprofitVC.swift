@@ -185,7 +185,7 @@ class BKVisitHeaderView: UIView {
         return view
     }()
     
-    let chainLogoImageView: UIImageView = {
+    lazy var chainLogoImageView: UIImageView = {
         let view = UIImageView(frame: .zero)
         view.backgroundColor = .clear
         view.contentMode = .scaleAspectFit
@@ -210,7 +210,7 @@ class BKVisitHeaderView: UIView {
         return label
     }()
     
-    
+    var heightConstraint: NSLayoutConstraint?
     let separatorBar: UIView = UIView(with: UIColor.accent)
     
     init(with transaction: BKTransaction) {
@@ -224,14 +224,27 @@ class BKVisitHeaderView: UIView {
     }
     
     func setup() {
+        
+        if #available(iOS 9.0, *) {
+           heightConstraint = chainLogoImageView.heightAnchor.constraint(equalToConstant: 0)
+        }
+        let widthOfChain = UIScreen.main.applicationFrame.width / 2 - 35
+
         descriptionLabel.attributedText = customDescriptionString
         let store = transaction.storeNon.store
         if let rectLogo = store?.rectLogo,
             let url = URL(string: rectLogo) {
-            chainLogoImageView.bkSetImageWithUrl(url, priority: .veryHigh)
+            chainLogoImageView.bkSetImageWithUrl(url, priority: .veryHigh) { _ in
+                let chainLogoSize = self.chainLogoImageView.sizeThatFits(CGSize(width: widthOfChain,
+                                                                           height: UIView.beamDefaultNavBarHeight - 7))
+                self.heightConstraint?.constant = chainLogoSize.height
+                self.heightConstraint?.isActive = true
+            }
         } else if let logo = store?.logo,
             let url = URL(string: logo) {
             chainLogoImageView.bkSetImageWithUrl(url, priority: .veryHigh)
+            self.heightConstraint?.constant = UIView.beamDefaultNavBarHeight - 7
+            self.heightConstraint?.isActive = true
         }
         
         addSubview(navBarView.usingConstraints())
@@ -324,26 +337,31 @@ class BKVisitHeaderView: UIView {
                             "sep": separatorBar,
                             "nav": navBarView]
         
+        let beamLogoSize = beamLogoImageView.sizeThatFits(CGSize(width: 60,
+                                                                 height: UIView.beamDefaultNavBarHeight - 7))
+
         let metrics: [String: Any] = ["navHeight": UIView.beamDefaultNavBarHeight,
                                       "descHeight": UIView.beamDefaultNavBarHeight + 50,
-                                      "top": insets.top]
+                                      "top": insets.top,
+                                      "pad": 5]
         
         let formats: [String] = ["H:|-30-[back(25)]",
                                  "H:|[nav]|",
-                                 "H:[beam(60)]-[plus]-[chain(70)]->=10-|",
+                                 "H:[beam(60)]-[plus]-[chain]->=30-|",
                                  "V:|-top-[nav(navHeight)]-5-[desc(descHeight)][sep(2)]|",
                                  "H:|[sep]|",
                                  "H:|-14-[desc]-14-|",
-                                 "V:|-5-[chain]-2-|",
+                                 "V:|->=5-[chain]-2-|",
                                  "V:|-5-[beam]-2-|"]
-        
+
         var constraints: Constraints = NSLayoutConstraint.center(plusLabel, in: navBarView)
         
         constraints += NSLayoutConstraint.constraints(withFormats: formats,
                                                       options: [],
                                                       metrics: metrics,
                                                       views: views)
-        constraints += [NSLayoutConstraint.centerOnY(backButton, in: navBarView)]
+        constraints += [NSLayoutConstraint.centerOnY(backButton, in: navBarView),
+        ]
         
         NSLayoutConstraint.activate(constraints)
     }
