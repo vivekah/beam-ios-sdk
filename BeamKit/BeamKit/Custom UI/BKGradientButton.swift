@@ -126,6 +126,8 @@ class BKNavBarView: UIView {
         return view
     }()
     
+    let logoView: UIView = UIView(with: .white)
+    
     let plusLabel: GradientTextView = .init(with: [UIColor.beamGradientLightYellow.cgColor,
                                                    UIColor.beamGradientLightOrange.cgColor],
                                             text: "+",
@@ -144,9 +146,10 @@ class BKNavBarView: UIView {
     
     func setup() {
         addSubview(backButton.usingConstraints())
-        addSubview(beamLogoImageView.usingConstraints())
-        addSubview(chainLogoImageView.usingConstraints())
-        addSubview(plusLabel.usingConstraints())
+        addSubview(logoView.usingConstraints())
+        logoView.addSubview(beamLogoImageView.usingConstraints())
+        logoView.addSubview(chainLogoImageView.usingConstraints())
+        logoView.addSubview(plusLabel.usingConstraints())
         addSubview(separatorBar.usingConstraints())
         setupConstraints()
     }
@@ -154,6 +157,7 @@ class BKNavBarView: UIView {
     func setupConstraints() {
         let insets = UIEdgeInsets.zero
         let views: Views = ["back": backButton,
+                            "logo": logoView,
                             "beam": beamLogoImageView,
                             "chain": chainLogoImageView,
                             "sep": separatorBar,
@@ -162,19 +166,21 @@ class BKNavBarView: UIView {
         let metrics: [String: Any] = ["navHeight": UIView.beamDefaultNavBarHeight,
                                       "top": insets.top]
         
-        let formats: [String] = ["H:|-30-[back(25)]",
+        let formats: [String] = ["H:|-30-[back(25)]->=8-[logo]->=20-|",
                                  "H:|[sep]|",
-                                 "H:[beam(60)]-[plus]-[chain(70)]->=10-|",
-                                 "V:|-5-[chain]-2-[sep(2)]|",
-                                 "V:|-5-[beam]-2-[sep]"]
+                                 "H:|[beam(60)]-[plus]-[chain]|",
+                                 "V:|->=5-[chain]|",
+                                 "V:|[beam]|",
+                                 "V:|-5-[logo]-2-[sep(2)]"]
         
-        var constraints: Constraints = NSLayoutConstraint.center(plusLabel, in: self)
-        
+        var constraints: Constraints = NSLayoutConstraint.center(logoView, in: self)
+
         constraints += NSLayoutConstraint.constraints(withFormats: formats,
                                                       options: [],
                                                       metrics: metrics,
                                                       views: views)
         constraints += [NSLayoutConstraint.centerOnY(backButton, in: self),
+                        NSLayoutConstraint.centerOnY(plusLabel, in: logoView),
                         NSLayoutConstraint.constrainHeight(self, by: 65)]
         
         NSLayoutConstraint.activate(constraints)

@@ -71,15 +71,15 @@ extension UIImageView {
     public func bkSetImageWithUrl(_ url:URL,
                                 placeHolderImage:UIImage? = nil,
                                 priority: Operation.QueuePriority = .normal,
-                                completion: ((Bool) -> Void)? = nil) {
+                                completion: ((UIImage?) -> Void)? = nil) {
         let request: NSMutableURLRequest = NSMutableURLRequest(url: url)
         request.addValue("image/*", forHTTPHeaderField: "Accept")
         
-        let onSuccess: (URLRequest?, URLResponse?, UIImage, Bool) -> Void = { _, _, _, _ in
-            completion?(true)
+        let onSuccess: (URLRequest?, URLResponse?, UIImage, Bool) -> Void = { _, _, image, _ in
+            completion?(image)
         }
         let onFailure: (URLRequest?, URLResponse?, NSError) -> Void = { _, _, _ in
-            completion?(false)
+            completion?( nil)
         }
         self.bkSetImageWithUrlRequest(request as URLRequest,
                                     placeHolderImage: placeHolderImage,

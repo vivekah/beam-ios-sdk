@@ -209,8 +209,10 @@ class BKVisitHeaderView: UIView {
         label.textColor = .beamOrange4
         return label
     }()
-    
+    let logoView: UIView = UIView(with: .white)
+
     var heightConstraint: NSLayoutConstraint?
+    var widthConstraint: NSLayoutConstraint?
     let separatorBar: UIView = UIView(with: UIColor.accent)
     
     init(with transaction: BKTransaction) {
@@ -224,11 +226,12 @@ class BKVisitHeaderView: UIView {
     }
     
     func setup() {
-        
-        if #available(iOS 9.0, *) {
-           heightConstraint = chainLogoImageView.heightAnchor.constraint(equalToConstant: 0)
-        }
         let widthOfChain = UIScreen.main.applicationFrame.width / 2 - 35
+        let heightOfChain = UIView.beamDefaultNavBarHeight - 7
+        if #available(iOS 9.0, *) {
+           heightConstraint = chainLogoImageView.heightAnchor.constraint(equalToConstant: heightOfChain)
+            widthConstraint = NSLayoutConstraint.constrainWidth(self.chainLogoImageView, by: widthOfChain)
+        }
 
         descriptionLabel.attributedText = customDescriptionString
         let store = transaction.storeNon.store
@@ -236,22 +239,36 @@ class BKVisitHeaderView: UIView {
             let url = URL(string: rectLogo) {
             chainLogoImageView.bkSetImageWithUrl(url, priority: .veryHigh) { _ in
                 let chainLogoSize = self.chainLogoImageView.sizeThatFits(CGSize(width: widthOfChain,
-                                                                           height: UIView.beamDefaultNavBarHeight - 7))
+                                                                           height: heightOfChain))
                 self.heightConstraint?.constant = chainLogoSize.height
                 self.heightConstraint?.isActive = true
             }
         } else if let logo = store?.logo,
             let url = URL(string: logo) {
-            chainLogoImageView.bkSetImageWithUrl(url, priority: .veryHigh)
-            self.heightConstraint?.constant = UIView.beamDefaultNavBarHeight - 7
-            self.heightConstraint?.isActive = true
+            chainLogoImageView.bkSetImageWithUrl(url, priority: .veryHigh) { image in
+                guard let image = image else { return }
+                var ratio = image.size.width / image.size.height
+                let chainLogoSize = self.chainLogoImageView.sizeThatFits(CGSize(width: widthOfChain,
+                                                                           height: heightOfChain))
+                self.heightConstraint?.constant = chainLogoSize.height
+                self.heightConstraint?.isActive = true
+                
+                //width greater than height
+                if ratio > 1 {
+                    let heightRatio = heightOfChain / image.size.height
+                    let scaledWidth = heightRatio * image.size.width
+                    self.widthConstraint?.constant = min(scaledWidth, widthOfChain)
+                    self.widthConstraint?.isActive = true
+                }
+            }
         }
         
         addSubview(navBarView.usingConstraints())
         navBarView.addSubview(backButton.usingConstraints())
-        navBarView.addSubview(beamLogoImageView.usingConstraints())
-        navBarView.addSubview(chainLogoImageView.usingConstraints())
-        navBarView.addSubview(plusLabel.usingConstraints())
+        navBarView.addSubview(logoView.usingConstraints())
+        logoView.addSubview(beamLogoImageView.usingConstraints())
+        logoView.addSubview(chainLogoImageView.usingConstraints())
+        logoView.addSubview(plusLabel.usingConstraints())
         addSubview(descriptionLabel.usingConstraints())
         addSubview(separatorBar.usingConstraints())
         setupConstraints()
@@ -335,6 +352,7 @@ class BKVisitHeaderView: UIView {
                             "plus": plusLabel,
                             "desc": descriptionLabel,
                             "sep": separatorBar,
+                            "logo": logoView,
                             "nav": navBarView]
         
         let beamLogoSize = beamLogoImageView.sizeThatFits(CGSize(width: 60,
@@ -345,22 +363,24 @@ class BKVisitHeaderView: UIView {
                                       "top": insets.top,
                                       "pad": 5]
         
-        let formats: [String] = ["H:|-30-[back(25)]",
+        let formats: [String] = ["H:|-30-[back(25)]->=8-[logo]->=20-|",
                                  "H:|[nav]|",
-                                 "H:[beam(60)]-[plus]-[chain]->=30-|",
+                                 "H:|[beam(60)]-[plus(9)]-(7@800)-[chain]|",
                                  "V:|-top-[nav(navHeight)]-5-[desc(descHeight)][sep(2)]|",
                                  "H:|[sep]|",
                                  "H:|-14-[desc]-14-|",
-                                 "V:|->=5-[chain]-2-|",
-                                 "V:|-5-[beam]-2-|"]
+                                 "V:|->=5-[chain]|",
+                                 "V:|-5-[beam]|",
+                                 "V:|[logo]-2-|"]
 
-        var constraints: Constraints = NSLayoutConstraint.center(plusLabel, in: navBarView)
+        var constraints: Constraints = NSLayoutConstraint.center(logoView, in: navBarView)
         
         constraints += NSLayoutConstraint.constraints(withFormats: formats,
                                                       options: [],
                                                       metrics: metrics,
                                                       views: views)
         constraints += [NSLayoutConstraint.centerOnY(backButton, in: navBarView),
+                        NSLayoutConstraint.centerOnY(plusLabel, in: logoView)
         ]
         
         NSLayoutConstraint.activate(constraints)
