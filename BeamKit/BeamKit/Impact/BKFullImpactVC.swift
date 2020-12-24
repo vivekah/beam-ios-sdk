@@ -45,7 +45,7 @@ class BKFullImpactVC: UIViewController {
         navBar.layoutIfNeeded()
         if let logo = context?.impact?.logo,
             let url = URL(string: logo) {
-        navBar.chainLogoImageView.bkSetImageWithUrl(url)
+            navBar.update(with: url)
         }
     }
         

@@ -126,6 +126,8 @@ class BKNavBarView: UIView {
         return view
     }()
     
+    
+    var widthConstraint: NSLayoutConstraint?
     let logoView: UIView = UIView(with: .white)
     
     let plusLabel: GradientTextView = .init(with: [UIColor.beamGradientLightYellow.cgColor,
@@ -155,6 +157,11 @@ class BKNavBarView: UIView {
     }
     
     func setupConstraints() {
+        let widthOfChain = UIScreen.main.applicationFrame.width / 2 - 35
+        if #available(iOS 9.0, *) {
+            widthConstraint = NSLayoutConstraint.constrainWidth(self.chainLogoImageView, by: widthOfChain)
+        }
+
         let insets = UIEdgeInsets.zero
         let views: Views = ["back": backButton,
                             "logo": logoView,
@@ -186,6 +193,23 @@ class BKNavBarView: UIView {
         NSLayoutConstraint.activate(constraints)
         setNeedsLayout()
         layoutIfNeeded()
+    }
+    
+    func update(with url: URL) {
+        let widthOfChain = UIScreen.main.applicationFrame.width / 2 - 35
+        let heightOfChain = UIView.beamDefaultNavBarHeight - 7
+        chainLogoImageView.bkSetImageWithUrl(url, priority: .veryHigh) { image in
+            guard let image = image else { return }
+            let ratio = image.size.width / image.size.height
+            
+            //width greater than height
+            if ratio > 1 {
+                let heightRatio = heightOfChain / image.size.height
+                let scaledWidth = heightRatio * image.size.width
+                self.widthConstraint?.constant = min(scaledWidth, widthOfChain)
+                self.widthConstraint?.isActive = true
+            }
+        }
     }
 
 }

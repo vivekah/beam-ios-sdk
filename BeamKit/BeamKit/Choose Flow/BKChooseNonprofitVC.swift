@@ -237,17 +237,27 @@ class BKVisitHeaderView: UIView {
         let store = transaction.storeNon.store
         if let rectLogo = store?.rectLogo,
             let url = URL(string: rectLogo) {
-            chainLogoImageView.bkSetImageWithUrl(url, priority: .veryHigh) { _ in
+            chainLogoImageView.bkSetImageWithUrl(url, priority: .veryHigh) { image in
+                guard let image = image else { return }
+                let ratio = image.size.width / image.size.height
                 let chainLogoSize = self.chainLogoImageView.sizeThatFits(CGSize(width: widthOfChain,
                                                                            height: heightOfChain))
                 self.heightConstraint?.constant = chainLogoSize.height
                 self.heightConstraint?.isActive = true
+                
+                //width greater than height
+                if ratio > 1 {
+                    let heightRatio = heightOfChain / image.size.height
+                    let scaledWidth = heightRatio * image.size.width
+                    self.widthConstraint?.constant = min(scaledWidth, widthOfChain)
+                    self.widthConstraint?.isActive = true
+                }
             }
         } else if let logo = store?.logo,
             let url = URL(string: logo) {
             chainLogoImageView.bkSetImageWithUrl(url, priority: .veryHigh) { image in
                 guard let image = image else { return }
-                var ratio = image.size.width / image.size.height
+                let ratio = image.size.width / image.size.height
                 let chainLogoSize = self.chainLogoImageView.sizeThatFits(CGSize(width: widthOfChain,
                                                                            height: heightOfChain))
                 self.heightConstraint?.constant = chainLogoSize.height
