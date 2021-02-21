@@ -52,10 +52,11 @@ extension BKManager {
             completion?(nil, .invalidConfiguration)
             return
         }
-        BeamKitContext.shared.complete(transaction) { _, error in
+        BeamKitContext.shared.complete(transaction) { transactionID, error in
           //  if error != nil {
                 BeamKitContext.shared.chooseContext.currentTransaction = nil
           //  }
+            completion?(transactionID, error)
         }
     }
     
