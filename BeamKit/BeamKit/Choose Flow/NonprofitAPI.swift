@@ -28,7 +28,7 @@ class NonprofitAPI {
             completion?(nil, false, .networkError)
         }
         
-        guard let userID = BeamKitContext.shared.userID else {
+        guard let userID = BeamKitContext.shared.getUserID() else {
             completion?(nil, false, .invalidUser)
             return
         }
@@ -127,7 +127,7 @@ class NonprofitAPI {
                                matchAmount: Double,
                                position: Int,
                                _ completion: ((Int?, BeamError) -> Void)? = nil) {
-        guard let user = BeamKitContext.shared.userID else {
+        guard let user = BeamKitContext.shared.getUserID() else {
             completion?(nil, .invalidUser)
             return
         }
@@ -164,7 +164,7 @@ class NonprofitAPI {
     
     class func cancelTransaction(id: Int,
                                _ completion: ((BeamError) -> Void)? = nil) {
-        guard let _ = BeamKitContext.shared.userID else {
+        guard let _ = BeamKitContext.shared.getUserID() else {
             completion?(.invalidUser)
             return
         }

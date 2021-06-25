@@ -39,10 +39,12 @@ extension BKManager {
     public func beginTransaction(at storeID: String,
                                  spend: CGFloat,
                                  forceMatchView: Bool = false,
+                                 email: String? = nil,
                                  _ completion: ((BKChooseNonprofitViewType?, BeamError) -> Void)? = nil) {
         BeamKitContext.shared.chooseContext.beginTransaction(at: storeID,
                                                              for: spend,
                                                              forceMatchView: forceMatchView,
+                                                             email: email,
                                                              completion)
         
      }

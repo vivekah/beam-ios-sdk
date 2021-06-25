@@ -11,7 +11,7 @@ import UIKit
 class ImpactAPI {
     
     func getImpact(_ completion: ((BKImpact?, BeamError)-> Void)? = nil) {
-        guard let userID = BeamKitContext.shared.userID else {
+        guard let userID = BeamKitContext.shared.getUserID() else {
             completion?(nil, .invalidUser)
             return
         }
@@ -37,7 +37,7 @@ class ImpactAPI {
     }
     
     func getImpact(for nonprofit: BKNonprofit, _ completion: ((BKNonprofit?, BeamError) -> Void)? = nil) {
-        guard let userID = BeamKitContext.shared.userID else {
+        guard let userID = BeamKitContext.shared.getUserID() else {
             BKLog.error("Invalid User Error")
             completion?(nil, .invalidUser)
             return

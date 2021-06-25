@@ -21,7 +21,7 @@ extension Notification.Name {
 class BeamKitContext {
     static let shared = BeamKitContext()
     
-    private(set) var userID: String? = nil
+    private(set) var userID: String? = nil 
     lazy var userAPI: BeamKitUserAPI = .init()
     lazy var nonprofits: [BKNonprofit] = .init() // todo figure ordering
     lazy var chooseContext: BKChooseNonprofitContext = .init()
@@ -30,6 +30,15 @@ class BeamKitContext {
     let bundle = Bundle(for: BKManager.self)
 
     var token: String? = nil
+    
+    func getUserID() -> String? {
+        if userID != nil {
+            return userID
+        } else if let id = UserDefaults.standard.string(forKey: "beam_user_id") {
+            return id
+        }
+        return nil
+    }
     
     func register(with key: String, environment: BKEnvironment) {
         self.token = key
@@ -43,6 +52,7 @@ class BeamKitContext {
         if let id = id {
             //TODO: test if need to clear out user/ data
             userID = id
+            self.save(id: id)
             BKLog.debug("Beam Registered User with id \(id)")
             completion?(userID, .none)
             return
@@ -54,11 +64,13 @@ class BeamKitContext {
             }
             guard let `self` = self else { return }
             self.userID = newUserID
+            self.save(id: newUserID)
         }
     }
     
     func deregisterUser(_ completion: ((BeamError) -> Void)? = nil) {
         userID = nil
+        clear()
         NotificationCenter.default.post(name: ._userRegistrationEvent,
                                         object: self,
                                         userInfo: nil)
@@ -70,4 +82,14 @@ class BeamKitContext {
                   _ completion: ((Int?, BeamError) -> Void)? = nil) {
         chooseFlow.complete(transaction, completion)
     }
+    
+    func save(id: String?) {
+        guard let id = id else { return }
+        UserDefaults.standard.set(id, forKey: "beam_user_id")
+    }
+    
+    func clear() {
+        UserDefaults.standard.removeObject(forKey: "beam_user_id")
+    }
+
 }

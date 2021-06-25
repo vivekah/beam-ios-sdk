@@ -14,8 +14,21 @@ class BKChooseNonprofitContext: NSObject {
     func beginTransaction(at storeID: String,
                           for spend: CGFloat,
                           forceMatchView: Bool = false,
+                          email: String? = nil,
                                 _ completion: ((BKChooseNonprofitViewType?, BeamError) -> Void)? = nil) {
-        guard let _ = BeamKitContext.shared.userID else {
+        if let email = email {
+            BeamKitContext.shared.registerUser(id: nil, info: ["BeamUserEmailKey": email]) {_,_ in
+                self._beginTransaction(at: storeID, for: spend, forceMatchView: forceMatchView, completion)
+            }
+        }
+        _beginTransaction(at: storeID, for: spend, forceMatchView: forceMatchView, completion)
+    }
+    
+    func _beginTransaction(at storeID: String,
+                          for spend: CGFloat,
+                          forceMatchView: Bool = false,
+                          _ completion: ((BKChooseNonprofitViewType?, BeamError) -> Void)? = nil) {
+        guard let _ = BeamKitContext.shared.getUserID() else {
             completion?(nil, .invalidUser)
             return
         }
