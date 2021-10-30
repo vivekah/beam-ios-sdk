@@ -439,13 +439,16 @@ extension BKImpactView {
         // TODO error out in dev mode if no delegate
         // possibly on redraw remove button if no delgate????
         guard let delegate = delegate else { return }
-        flow.showFullImpact(from: delegate.baseViewController)
+     //   flow.showFullImpact(from: delegate.baseViewController)
+        flow.showInstacartImpact(from: delegate.baseViewController)
     }
     
     @objc
     func seeGlobal() {
         guard let delegate = delegate else { return }
-        flow.showJustCommunityImpact(from: delegate.baseViewController)
+       // flow.showJustCommunityImpact(from: delegate.baseViewController)
+        flow.showInstacartImpact(from: delegate.baseViewController)
+
     }
     
     @objc

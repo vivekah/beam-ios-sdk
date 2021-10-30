@@ -22,3 +22,20 @@ class BKImpact {
     }
 }
 
+class BK_INSCopy {
+    var subtitle: String?
+    var title: String?
+    var complianceCTA: String?
+    var complianceDescription: String?
+}
+
+class BK_INSImpact {
+    let nonprofits: [BKNonprofit]
+    let copy: BK_INSCopy
+    
+    init(copy: BK_INSCopy,
+         nonprofits: [BKNonprofit]) {
+        self.nonprofits = nonprofits
+        self.copy = copy 
+    }
+}

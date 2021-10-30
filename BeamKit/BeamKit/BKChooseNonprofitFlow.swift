@@ -55,6 +55,19 @@ class BKChooseNonprofitFlow {
         }
     }
     
+    func register(_ completion: ((BeamError) -> Void)? = nil) {
+
+        context.register(completion)
+    }
+    
+    func favorite(nonprofit: BKNonprofit, from vc: UIViewController, completion: (() -> Void)? = nil) {
+        context.favorite(nonprofit: nonprofit) { _ in
+            DispatchQueue.main.async {
+                self.navigateBack(from: vc, completion: completion)
+            }
+        }
+    }
+
     lazy var testTransaction: BKTransaction = {
         let non1 = BKNonprofit(cause: "Sustainability",
         id: 1,

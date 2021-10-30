@@ -22,6 +22,7 @@
 		1B1FC404233C182F00A45E87 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B1FC403233C182F00A45E87 /* Transaction.swift */; };
 		1B32FE0423F7890A00260309 /* (null) in Embed Frameworks */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1B59B66623E0F60F0012CEDD /* GradientTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B59B66523E0F60E0012CEDD /* GradientTextView.swift */; };
+		1B62CA2926C35F5B00C21668 /* URLConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B62CA2826C35F5B00C21668 /* URLConvertible.swift */; };
 		1B808754234F721C00C42CF1 /* TitleImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B808753234F721C00C42CF1 /* TitleImageView.swift */; };
 		1B8087582352726300C42CF1 /* ImpactAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8087572352726300C42CF1 /* ImpactAPI.swift */; };
 		1B80875A235275D700C42CF1 /* BKImpact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B808759235275D700C42CF1 /* BKImpact.swift */; };
@@ -86,6 +87,7 @@
 		1B1FC401233C16CC00A45E87 /* BeamError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeamError.swift; sourceTree = "<group>"; };
 		1B1FC403233C182F00A45E87 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		1B59B66523E0F60E0012CEDD /* GradientTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientTextView.swift; sourceTree = "<group>"; };
+		1B62CA2826C35F5B00C21668 /* URLConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = URLConvertible.swift; path = ../../../../BeamCarbonKit/BeamKit/BeamKit/Processors/URLConvertible.swift; sourceTree = "<group>"; };
 		1B808753234F721C00C42CF1 /* TitleImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleImageView.swift; sourceTree = "<group>"; };
 		1B8087572352726300C42CF1 /* ImpactAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImpactAPI.swift; sourceTree = "<group>"; };
 		1B808759235275D700C42CF1 /* BKImpact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BKImpact.swift; sourceTree = "<group>"; };
@@ -229,6 +231,7 @@
 		1BDE5A6C233D43AB003443D5 /* Processors */ = {
 			isa = PBXGroup;
 			children = (
+				1B62CA2826C35F5B00C21668 /* URLConvertible.swift */,
 				1BDE5A67233C244F003443D5 /* ImageNetworking.swift */,
 				1BC04769233C0D0E00E723F5 /* Network.swift */,
 				1BDE5A65233C1BEF003443D5 /* Log.swift */,
@@ -324,7 +327,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 1B1EAC6922C41E8100BB02EB /* Build configuration list for PBXProject " BeamKit" */;
+			buildConfigurationList = 1B1EAC6922C41E8100BB02EB /* Build configuration list for PBXProject " BeamCarbonKit" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -398,6 +401,7 @@
 				1B1FC3FF233C13F600A45E87 /* BeamKitContext.swift in Sources */,
 				1B81260C237E5DFD0097B009 /* BKImpactContext.swift in Sources */,
 				1BADFD1C22C6A22E009DAD34 /* GradientLayer.swift in Sources */,
+				1B62CA2926C35F5B00C21668 /* URLConvertible.swift in Sources */,
 				1B1EAC8122C41FEE00BB02EB /* Font+Beam.swift in Sources */,
 				1B812609237E13D40097B009 /* BackArrowButton.swift in Sources */,
 				1B02CA9522DD23C0002371C4 /* BKChooseNonprofitVC.swift in Sources */,
@@ -482,7 +486,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -540,7 +544,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -556,11 +560,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AB880DEF5398223F1C40196D /* Pods-BeamKit.debug.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = EXU7YC35JG;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -569,13 +574,13 @@
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/BeamKit/Classes/Exclude/Beam-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.8;
+				MARKETING_VERSION = 1.2.9;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = us.crro.beamapp.BeamApp.BeamKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -593,11 +598,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 173E41BEF4E85CABB1D895C5 /* Pods-BeamKit.release.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = EXU7YC35JG;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -606,13 +612,13 @@
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/BeamKit/Classes/Exclude/Beam-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.8;
+				MARKETING_VERSION = 1.2.9;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = us.crro.beamapp.BeamApp.BeamKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -628,7 +634,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1B1EAC6922C41E8100BB02EB /* Build configuration list for PBXProject " BeamKit" */ = {
+		1B1EAC6922C41E8100BB02EB /* Build configuration list for PBXProject " BeamCarbonKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1B1EAC7522C41E8100BB02EB /* Debug */,

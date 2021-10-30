@@ -27,6 +27,12 @@ class BKImpactContext {
             NotificationCenter.default.post(name: ._bkDidUpdateCommunityImpact, object: nil)
         }
     }
+    
+    var instacartImpact: BK_INSImpact? = nil {
+        didSet {
+            NotificationCenter.default.post(name: ._bkDidUpdateCommunityImpact, object: nil)
+        }
+    }
 
     var numberOfNonprofits: Int {
         return self.impact?.nonprofits.count ?? 0
@@ -68,5 +74,17 @@ class BKImpactContext {
     func clearImpact() {
         impact = nil
         communityImpact = nil
+        instacartImpact = nil
+    }
+    
+    func loadInstacartImpact() {
+        api.getInstacartImpact() { impact, error in
+            guard error == BeamError.none,
+                let impact = impact else {
+                    return
+            }
+            BKLog.info("impact \(impact)")
+            self.instacartImpact = impact
+        }
     }
 }

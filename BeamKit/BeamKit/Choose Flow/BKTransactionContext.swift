@@ -83,4 +83,21 @@ class BKChooseNonprofitContext: NSObject {
                            _ completion: ((BeamError) -> Void)? = nil) {
         NonprofitAPI.cancelTransaction(id: id, completion)
     }
+    
+    func register(_ completion: ((BeamError) -> Void)? = nil) {
+
+        NonprofitAPI.registerTransaction()
+        { id, error in
+            BKLog.info("did register \(id)")
+            completion?(error)
+        }
+    }
+    
+    func favorite(nonprofit: BKNonprofit, _ completion: ((BeamError) -> Void)? = nil) {
+
+        NonprofitAPI.favorite(id: nonprofit.id, { (error) in
+            BKLog.info("did register")
+            completion?(error)
+        })
+    }
 }

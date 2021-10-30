@@ -9,7 +9,11 @@
 import UIKit
 
 
-class BKImpactFlow {
+public class BKImpactFlow {
+    
+    public init() {
+        
+    }
     
     var context: BKImpactContext {
         return BeamKitContext.shared.impactContext
@@ -22,6 +26,7 @@ class BKImpactFlow {
     
     lazy var currentView: UIViewController = self.impactVC
     
+    public
     func showFullImpact(from viewController: UIViewController) {
         context.loadCommunityImpact()
         let fullImpact = BKFullImpactVC(context: context, flow: self)
@@ -40,6 +45,14 @@ class BKImpactFlow {
     func didDismissFullImpact() {
         currentView = impactVC
     }
+    
+    public func showInstacartImpact(from viewController: UIViewController) {
+        context.loadInstacartImpact()
+
+        let impact = BK_INSImpactVC(context: context, flow: self)
+        viewController.present(impact, animated: true, completion: nil)
+    }
+    
 }
 
 // Page Controls

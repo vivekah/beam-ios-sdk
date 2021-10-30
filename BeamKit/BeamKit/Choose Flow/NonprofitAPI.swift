@@ -14,6 +14,7 @@ class NonprofitAPI {
                 
         let successHandler: (JSON?) -> Void = {  nonprofitJSON in
             BKLog.info("Did Retrieve Nonprofits for store \(storeID)")
+            BKLog.info("Nonprofit JSON \(nonprofitJSON)")
             guard let json = nonprofitJSON,
                 let model = parseStoreNonprofitJSON(json, for: storeID) else {
                     completion?(nil, false, .invalidConfiguration)
@@ -32,8 +33,8 @@ class NonprofitAPI {
             completion?(nil, false, .invalidUser)
             return
         }
-        
-        Network.shared.get(urlPath: "nonprofits/?store=\(storeID)&user=\(userID)",
+        let chainID = "61"
+        Network.shared.get(urlPath: "chains/nonprofits/?chain=\(chainID)&store=\(storeID)&partner_user_id=\(userID)&show_community_impact=true",
                            successJSONHandler: successHandler,
                            errorHandler: errorHandler)
     }
@@ -41,6 +42,13 @@ class NonprofitAPI {
     class func parseStoreNonprofitJSON(_ json: JSON, for storeID: String) -> BKStoreNonprofitsModel? {
         let model = BKStoreNonprofitsModel()
         let lastNon = json["last_nonprofit"] as? Int ?? 0
+        
+        if let donationInfo =  json["chain_donation_type"] as? JSON {
+            let sub = donationInfo["description_mobile"] as? String ?? "Choose a cause to contribute to with your next order, and one meal will be donated there at no extra cost to you."
+            let title = donationInfo["title_mobile"] as? String ?? "Fight food insecurity"
+            model.title = title
+            model.subtitle = sub
+        }
     
         if let nonprofits = json["nonprofits"] as? [JSON] {
             var parsed = [BKNonprofit]()
@@ -107,16 +115,17 @@ class NonprofitAPI {
         let impact = json["impact"] as? JSON
         let total_donated = impact?["total_donated"] as? CGFloat ?? 0
         let goal_amount = impact?["target_donation_amount"] as? CGFloat ?? 10
-        
+        let percentage = impact?["percentage"] as? Int ?? 0
         
         let nonprofit = BKNonprofit(cause: cause,
                                     id: id,
                                     description: descripton ?? "",
                                     image: image,
-                                    impactDescription: impact_description,
+                                    impactDescription: "Fund " + impact_description,
                                     name: name,
                                     targetDonations: goal_amount,
-                                    totalDonations: total_donated)
+                                    totalDonations: total_donated,
+                                    percentage: percentage)
         return nonprofit
     }
     
@@ -132,10 +141,10 @@ class NonprofitAPI {
             return
         }
         
-        let body: JSON  = ["user": user,
-                           "store": store,
+        let body: JSON  = ["customer_id": user,
+                           "store_id": store,
                            "cart_total": cart,
-                           "nonprofit": id,
+                           "nonprofit_id": id,
                            "user_did_match": match,
                            "user_match_amount": matchAmount,
                            "nonprofit_position": position]
@@ -156,7 +165,39 @@ class NonprofitAPI {
             completion?(nil, .networkError)
         }
         
-        Network.shared.post(urlPath: "transaction/",
+        Network.shared.post(urlPath: "users/transaction/",
+                            body: body,
+                            successJSONHandler: successHandler,
+                            errorHandler: errorHandler)
+    }
+    
+    class func registerTransaction(_ completion: ((Int?, BeamError) -> Void)? = nil) {
+        guard let user = BeamKitContext.shared.getUserID() else {
+            completion?(nil, .invalidUser)
+            return
+        }
+        
+        let body: JSON  = ["partner_user_id": user,
+                           "cart_total": "123",
+                           "store_id": "13"]
+        
+        let successHandler: (JSON?) -> Void = {  transactionJSON in
+            guard let transactionID = transactionJSON?["transaction"] as? Int else {
+                BKLog.error("Select Nonprofit: invalid response")
+                completion?(nil, .invalidConfiguration)
+                return
+            }
+            
+            BKLog.debug("Beam Registered Transaction with id \(transactionID)")
+            completion?(transactionID, .none)
+        }
+        
+        let errorHandler: (ErrorType) -> Void = { error in
+            BKLog.error("Select Nonprofit Error")
+            completion?(nil, .networkError)
+        }
+        
+        Network.shared.post(urlPath: "users/transaction/",
                             body: body,
                             successJSONHandler: successHandler,
                             errorHandler: errorHandler)
@@ -181,6 +222,34 @@ class NonprofitAPI {
         }
         
         Network.shared.patch(urlPath: "transaction/?transaction=\(id)",
+                            successJSONHandler: successHandler,
+                            errorHandler: errorHandler)
+    }
+    
+    class func favorite(id: Int,
+                               _ completion: ((BeamError) -> Void)? = nil) {
+        guard let user = BeamKitContext.shared.getUserID() else {
+            completion?(.invalidUser)
+            return
+        }
+
+        let successHandler: (JSON?) -> Void = {  _ in
+
+            BKLog.debug("Beam cancelled Transaction with id \(id)")
+            completion?(.none)
+        }
+        
+        let errorHandler: (ErrorType) -> Void = { error in
+            BKLog.error("Cancel Transaction Error")
+            completion?(.networkError)
+        }
+        
+        let body: JSON  = ["partner_user_id": user,
+                           "chain": "7",
+                           "nonprofit": id]
+        
+        Network.shared.post(urlPath: "users/selection",
+                            body: body,
                             successJSONHandler: successHandler,
                             errorHandler: errorHandler)
     }

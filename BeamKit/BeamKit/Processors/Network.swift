@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Alamofire
+//import Alamofire
 
 typealias JSON = [String: Any]
 typealias ErrorMessage = String
@@ -52,7 +52,7 @@ typealias NetworkCompletionHandler = (Data?, URLResponse?, Error?) -> Void
 
 class Network {
     static let shared: Network = .init()
-    private let reachabilityManager: NetworkReachabilityManager? = NetworkReachabilityManager()
+
     var environment: BKEnvironment = .staging
     
     var isStaging: Bool {
@@ -62,7 +62,7 @@ class Network {
     lazy var baseURL: String = {
         switch self.environment {
         case .staging:
-            return "https://staging.sdk.beamimpact.com/api/v1/"
+            return "https://staging-central-backend.beamimpact.com/api/v2/"
         case .production:
             return "https://prod.sdk.beamimpact.com/api/v1/"
         }
@@ -72,13 +72,7 @@ class Network {
         return statusCode >= 200 && statusCode < 300
     }
     
-    var isReachable: Bool {
-        if let manager = reachabilityManager {
-            return manager.isReachable
-        }
-        return false
-    }
-    
+
     var headers: [String: String] {
         
         var headers:[String: String] = ["Content-Type": "application/json"]
@@ -150,10 +144,6 @@ extension Network {
         let completionHandler: NetworkCompletionHandler = getHandler(successHandler: successHandler,
                                                                      errorHandler: errorHandler)
         
-        guard isReachable else {
-            errorHandler(.noNetwork)
-            return nil
-        }
         
         guard let url = URL(string: baseURL + urlPath) else {
             errorHandler(.invalidURL)

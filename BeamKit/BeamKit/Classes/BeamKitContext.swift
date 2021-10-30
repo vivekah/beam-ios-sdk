@@ -83,6 +83,13 @@ class BeamKitContext {
         chooseFlow.complete(transaction, completion)
     }
     
+    
+    func register(_ completion: ((BeamError) -> Void)? = nil) {
+
+        chooseFlow.register(completion)
+    }
+
+    
     func save(id: String?) {
         guard let id = id else { return }
         UserDefaults.standard.set(id, forKey: "beam_user_id")
@@ -90,6 +97,62 @@ class BeamKitContext {
     
     func clear() {
         UserDefaults.standard.removeObject(forKey: "beam_user_id")
+    }
+
+}
+
+extension BeamKitContext {
+    public
+    func saveNonprofit(id: Int?) {
+        guard let id = id else { return }
+        UserDefaults.standard.set(id, forKey: "beam_nonprofit_id")
+    }
+    public
+    func getNonprofitID() -> Int? {
+        let id = UserDefaults.standard.integer(forKey: "beam_nonprofit_id")
+        return id
+    }
+    public
+    func saveNonprofit(name: String?) {
+        guard let name = name else { return }
+        UserDefaults.standard.set(name, forKey: "beam_nonprofit_name")
+    }
+    public
+    func getNonprofitName() -> String? {
+        if let id = UserDefaults.standard.string(forKey: "beam_nonprofit_name") {
+            return id
+        }
+        return nil
+    }
+    
+    public
+    func registerMeal() {
+        let personal = getUserMeals() ?? 0
+        let community = getCommunityMeals() ?? 0
+        saveUserMeals(id: personal + 1)
+        saveCommunityMeals(id: community + 2)
+    }
+    
+    public
+    func saveUserMeals(id: Int?) {
+        guard let id = id else { return }
+        UserDefaults.standard.set(id, forKey: "beam_personal_meals")
+    }
+    public
+    func getUserMeals() -> Int? {
+        let id = UserDefaults.standard.integer(forKey: "beam_personal_meals")
+        return id
+    }
+    
+    public
+    func saveCommunityMeals(id: Int?) {
+        guard let id = id else { return }
+        UserDefaults.standard.set(id, forKey: "beam_community_meals")
+    }
+    public
+    func getCommunityMeals() -> Int? {
+        let id = UserDefaults.standard.integer(forKey: "beam_community_meals")
+        return id
     }
 
 }

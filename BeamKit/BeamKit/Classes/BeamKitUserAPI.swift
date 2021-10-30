@@ -52,16 +52,19 @@ class BeamKitUserAPI {
             BKLog.error("Register User Error")
             completion?(nil, .invalidConfiguration)
         }
+        let id = "madeupstringforalex-instacart"
+        body = ["id": id]
+
         
         let successHandler: (JSON?) -> Void = {  userJSON in
-            guard let userID = userJSON?["user"] as? String else {
-                BKLog.error("Register User: invalid response")
-                completion?(nil, .invalidConfiguration)
-                return
-            }
+//            guard let userID = userJSON?["user"] as? String else {
+//                BKLog.error("Register User: invalid response")
+//                completion?(nil, .invalidConfiguration)
+//                return
+//            }
             
-            BKLog.debug("Beam Registered User with id \(userID)")
-            completion?(userID, .none)
+            BKLog.debug("Beam Registered User with id \(id)")
+            completion?(id, .none)
         }
         
         let errorHandler: (ErrorType) -> Void = { error in
@@ -69,7 +72,8 @@ class BeamKitUserAPI {
             completion?(nil, .networkError)
         }
         
-        Network.shared.post(urlPath: "user/",
+        
+        Network.shared.post(urlPath: "users/register/",
                             body: body,
                             successJSONHandler: successHandler,
                             errorHandler: errorHandler)

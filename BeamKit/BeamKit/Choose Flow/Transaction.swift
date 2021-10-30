@@ -23,6 +23,7 @@ internal class BKNonprofit: NSObject {
     var targetDonations: CGFloat
     var totalDonations: CGFloat
     var storeIDs: Set<String> = .init()
+    var percentage: Int
     
     init(cause: String,
          id: Int,
@@ -31,7 +32,8 @@ internal class BKNonprofit: NSObject {
          impactDescription: String,
          name: String,
          targetDonations: CGFloat,
-         totalDonations: CGFloat) {
+         totalDonations: CGFloat,
+         percentage: Int = 0) {
         self.cause = cause
         self.id = id
         self.missionDescription = description
@@ -40,6 +42,7 @@ internal class BKNonprofit: NSObject {
         self.name = name
         self.targetDonations = targetDonations
         self.totalDonations = totalDonations
+        self.percentage = percentage
         super.init()
     }
 }
@@ -75,6 +78,8 @@ class BKStoreNonprofitsModel: NSObject {
     var nonprofits: [BKNonprofit]?
     var lastNonprofit: BKNonprofit?
     var store: BKStore?
+    var title: String?
+    var subtitle: String?
 }
 
 class BKTransaction: NSObject {

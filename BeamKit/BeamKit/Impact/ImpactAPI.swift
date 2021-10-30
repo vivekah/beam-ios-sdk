@@ -133,3 +133,60 @@ class ImpactAPI {
     }
     
 }
+
+
+extension ImpactAPI {
+    
+    func getInstacartImpact(_ completion: ((BK_INSImpact?, BeamError) -> Void)? = nil) {
+        
+        let successHandler: (JSON?) -> Void = {  impactJSON in
+              guard let impactJSON = impactJSON else {
+                BKLog.error("Get Impact: invalid response")
+                completion?(nil, .invalidConfiguration)
+                return
+            }
+            BKLog.info("Did Retrieve Instacart Impact JSON \(impactJSON)")
+            let impact = ImpactAPI.parseIns(impactJSON)
+            completion?(impact, .none)
+        }
+        
+        let errorHandler: (ErrorType) -> Void = { error in
+            BKLog.error("See Impact Error")
+            completion?(nil, .networkError)
+        }
+        
+        guard let userID = BeamKitContext.shared.getUserID() else {
+            completion?(nil, .invalidUser)
+            return
+        }
+        Network.shared.get(urlPath: "users/impact/instacart?user=\(userID)",
+        successJSONHandler: successHandler,
+        errorHandler: errorHandler)
+    }
+    
+    private class func parseIns(_ json: JSON) -> BK_INSImpact? {
+        let copy = json["copy"] as? JSON ?? [:]
+        let parsedCopy = parse(copy: copy)
+        
+        var nonprofits: [BKNonprofit] = .init()
+        if let nonprofitJSON = json["community_impact"] as? [JSON] {
+            for non in nonprofitJSON  {
+                let parsed_nonprofit = NonprofitAPI.parseNonprofitJSON(non)
+                nonprofits.append(parsed_nonprofit)
+            }
+        }
+        
+
+        return BK_INSImpact(copy: parsedCopy, nonprofits: nonprofits)
+    }
+    
+    private class func parse(copy copyJSON: JSON) -> BK_INSCopy {
+        let copy = BK_INSCopy()
+        copy.subtitle = copyJSON["impactDescriptionMobile"] as? String
+        copy.title = copyJSON["impactTitleMobile"] as? String
+        copy.complianceCTA = copyJSON["complianceCtaMobile"] as? String
+        copy.complianceDescription = copyJSON["complianceDescriptionMobile"] as? String
+        
+        return copy
+    }
+}

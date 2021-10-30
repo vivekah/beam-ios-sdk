@@ -186,3 +186,30 @@ extension UIColor {
         return UIColor(red: (233.0/255.0), green: (232.0/255.0), blue: (231.0/255.0), alpha: 1.0)
     }
 }
+
+
+extension UIColor {
+    internal class var instacartDescriptionGrey: UIColor {
+        UIColor(red: (114.0/255.0), green: (118.0/255.0), blue: (126.0/255.0), alpha: 1.0)
+    }
+    
+    internal class var instacartTitleGrey: UIColor {
+        return  UIColor(red: (52.0/255.0), green: (53.0/255.0), blue: (56.0/255.0), alpha: 1.0)
+    }
+    
+    internal class var instacartGreen: UIColor {
+        return UIColor(red: (10.0/255.0), green: (173.0/255.0), blue: (10.0/255.0), alpha: 1.0)
+    }
+    
+    internal class var instacartBeamOrange: UIColor {
+        return UIColor(red: (233.0/255.0), green: (115.0/255.0), blue: (0.0/255.0), alpha: 1.0)
+    }
+    
+    internal class var instacartDisableGrey: UIColor {
+        return UIColor(red: (246.0/255.0), green: (247.0/255.0), blue: (248.0/255.0), alpha: 1.0)
+    }
+    
+    internal class var instacartBorderGrey: UIColor {
+        return UIColor(red: (232.0/255.0), green: (233.0/255.0), blue: (238.0/255.0), alpha: 1.0)
+    }
+}
